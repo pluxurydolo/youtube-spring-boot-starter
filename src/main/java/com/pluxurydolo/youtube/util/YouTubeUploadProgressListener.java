@@ -1,0 +1,52 @@
+package com.pluxurydolo.youtube.util;
+
+import com.google.api.client.googleapis.media.MediaHttpUploader;
+import com.google.api.client.googleapis.media.MediaHttpUploaderProgressListener;
+import com.pluxurydolo.youtube.exception.UploadException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
+import java.io.IOException;
+
+import static com.google.api.client.googleapis.media.MediaHttpUploader.UploadState.INITIATION_COMPLETE;
+import static com.google.api.client.googleapis.media.MediaHttpUploader.UploadState.INITIATION_STARTED;
+import static com.google.api.client.googleapis.media.MediaHttpUploader.UploadState.MEDIA_COMPLETE;
+import static com.google.api.client.googleapis.media.MediaHttpUploader.UploadState.MEDIA_IN_PROGRESS;
+
+public class YouTubeUploadProgressListener implements MediaHttpUploaderProgressListener {
+    private static final Logger LOGGER = LoggerFactory.getLogger(YouTubeUploadProgressListener.class);
+
+    @Override
+    public void progressChanged(MediaHttpUploader uploader) {
+        Mono.fromCallable(uploader::getUploadState)
+            .doOnSuccess(uploadState -> logResult(uploader, uploadState))
+            .subscribeOn(Schedulers.boundedElastic())
+            .subscribe();
+    }
+
+    private static void logResult(MediaHttpUploader uploader, MediaHttpUploader.UploadState uploadState) {
+        if (uploadState == INITIATION_STARTED) {
+            LOGGER.info("sruc Инициализация загрузки видео");
+        } else if (uploadState == INITIATION_COMPLETE) {
+            LOGGER.info("ytwm Инициализация загрузки видео завершена");
+        } else if (uploadState == MEDIA_IN_PROGRESS) {
+            String formattedProgress = formattedProgress(uploader);
+            LOGGER.info("bxnk Загружено: {}%", formattedProgress);
+        } else if (uploadState == MEDIA_COMPLETE) {
+            LOGGER.info("hnlj Загрузка видео завершена");
+        } else {
+            LOGGER.info("zxkf Статус загрузки неизвестен");
+        }
+    }
+
+    private static String formattedProgress(MediaHttpUploader uploader) {
+        try {
+            double progress = uploader.getProgress() * 100;
+            return String.format("%.1f", progress);
+        } catch (IOException exception) {
+            throw new UploadException(exception);
+        }
+    }
+}
