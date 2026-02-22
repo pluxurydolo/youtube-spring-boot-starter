@@ -14,6 +14,7 @@ import static com.google.api.client.googleapis.media.MediaHttpUploader.UploadSta
 import static com.google.api.client.googleapis.media.MediaHttpUploader.UploadState.INITIATION_STARTED;
 import static com.google.api.client.googleapis.media.MediaHttpUploader.UploadState.MEDIA_COMPLETE;
 import static com.google.api.client.googleapis.media.MediaHttpUploader.UploadState.MEDIA_IN_PROGRESS;
+import static java.util.Locale.US;
 
 public class YouTubeUploadProgressListener implements MediaHttpUploaderProgressListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(YouTubeUploadProgressListener.class);
@@ -44,7 +45,7 @@ public class YouTubeUploadProgressListener implements MediaHttpUploaderProgressL
     private static String formattedProgress(MediaHttpUploader uploader) {
         try {
             double progress = uploader.getProgress() * 100;
-            return String.format("%.1f", progress);
+            return String.format(US, "%.1f", progress);
         } catch (IOException exception) {
             throw new UploadException(exception);
         }

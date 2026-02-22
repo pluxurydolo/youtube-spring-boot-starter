@@ -102,7 +102,7 @@ class YouTubeUploadProgressListenerTests {
                     .hasSize(1);
 
                 assertThat(logs.getFirst().getFormattedMessage())
-                    .isEqualTo("bxnk Загружено: 33,6%");
+                    .isEqualTo("bxnk Загружено: 33.6%");
             });
     }
 
