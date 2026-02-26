@@ -5,7 +5,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
-public abstract class AbstractTokenSaver {
+public abstract class AbstractYouTubeTokenSaver {
     public Mono<String> save(TokenResponse tokenResponse) {
         String accessToken = tokenResponse.getAccessToken();
         String refreshToken = tokenResponse.getRefreshToken();

@@ -7,7 +7,7 @@ import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
 import com.pluxurydolo.youtube.dto.MultipartFileWrapper;
-import com.pluxurydolo.youtube.exception.UploadException;
+import com.pluxurydolo.youtube.exception.YouTubeUploadException;
 import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
 import com.pluxurydolo.youtube.util.YouTubeUploadProgressListener;
 import org.springframework.core.io.InputStreamSource;
@@ -57,7 +57,7 @@ public class YouTubeClient {
 
             request.execute();
         } catch (IOException exception) {
-            return Mono.error(new UploadException(exception));
+            return Mono.error(new YouTubeUploadException(exception));
         }
 
         return Mono.just(title);

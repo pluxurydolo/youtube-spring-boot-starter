@@ -5,12 +5,12 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.pluxurydolo.youtube.client.YouTubeClient;
-import com.pluxurydolo.youtube.controller.OAuthController;
+import com.pluxurydolo.youtube.controller.YouTubeOAuthController;
 import com.pluxurydolo.youtube.security.CredentialsRetriever;
-import com.pluxurydolo.youtube.security.secret.ClientSecretProvider;
-import com.pluxurydolo.youtube.security.token.AbstractTokenRetriever;
-import com.pluxurydolo.youtube.security.token.AbstractTokenSaver;
-import com.pluxurydolo.youtube.service.OAuthService;
+import com.pluxurydolo.youtube.security.secret.YouTubeClientSecretProvider;
+import com.pluxurydolo.youtube.security.token.AbstractYouTubeTokenRetriever;
+import com.pluxurydolo.youtube.security.token.AbstractYouTubeTokenSaver;
+import com.pluxurydolo.youtube.service.YouTubeOAuthService;
 import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @AutoConfiguration
-@ConditionalOnBean(ClientSecretProvider.class)
+@ConditionalOnBean(YouTubeClientSecretProvider.class)
 @ConditionalOnProperty(prefix = "youtube", name = "application-name")
 @ConditionalOnProperty(prefix = "youtube", name = "redirect.uri")
 public class YouTubeAutoConfiguration {
@@ -55,8 +55,8 @@ public class YouTubeAutoConfiguration {
     }
 
     @Bean
-    public GoogleClientSecrets googleClientSecrets(GsonFactory gsonFactory, ClientSecretProvider clientSecretProvider) {
-        InputStream clientSecret = clientSecretProvider.getClientSecret();
+    public GoogleClientSecrets googleClientSecrets(GsonFactory gsonFactory, YouTubeClientSecretProvider youtubeClientSecretProvider) {
+        InputStream clientSecret = youtubeClientSecretProvider.getClientSecret();
         InputStreamReader inputStreamReader = new InputStreamReader(clientSecret);
 
         try {
@@ -83,13 +83,13 @@ public class YouTubeAutoConfiguration {
 
     @Bean
     public YouTubeInstanceBuilder youTubeInstanceBuilder(
-        AbstractTokenRetriever abstractTokenRetriever,
+        AbstractYouTubeTokenRetriever abstractYoutubeTokenRetriever,
         CredentialsRetriever credentialsRetriever,
         NetHttpTransport netHttpTransport,
         GsonFactory gsonFactory
     ) {
         return new YouTubeInstanceBuilder(
-            abstractTokenRetriever,
+            abstractYoutubeTokenRetriever,
             credentialsRetriever,
             netHttpTransport,
             gsonFactory,
@@ -98,16 +98,16 @@ public class YouTubeAutoConfiguration {
     }
 
     @Bean
-    public OAuthController oauthController(OAuthService oAuthService) {
-        return new OAuthController(oAuthService);
+    public YouTubeOAuthController oauthController(YouTubeOAuthService youTubeOAuthService) {
+        return new YouTubeOAuthController(youTubeOAuthService);
     }
 
     @Bean
-    public OAuthService oauthService(
+    public YouTubeOAuthService oauthService(
         GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow,
-        AbstractTokenSaver abstractTokenSaver
+        AbstractYouTubeTokenSaver abstractYouTubeTokenSaver
     ) {
-        return new OAuthService(googleAuthorizationCodeFlow, abstractTokenSaver, redirectUri);
+        return new YouTubeOAuthService(googleAuthorizationCodeFlow, abstractYouTubeTokenSaver, redirectUri);
     }
 
     @Bean
