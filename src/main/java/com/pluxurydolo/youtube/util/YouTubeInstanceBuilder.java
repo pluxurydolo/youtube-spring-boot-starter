@@ -4,20 +4,20 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.auth.http.HttpCredentialsAdapter;
-import com.pluxurydolo.youtube.dto.YouTubeTokens;
+import com.pluxurydolo.youtube.dto.Tokens;
 import com.pluxurydolo.youtube.security.CredentialsRetriever;
-import com.pluxurydolo.youtube.security.token.AbstractYouTubeTokenRetriever;
+import com.pluxurydolo.youtube.security.token.AbstractTokenRetriever;
 import reactor.core.publisher.Mono;
 
 public class YouTubeInstanceBuilder {
-    private final AbstractYouTubeTokenRetriever abstractYoutubeTokenRetriever;
+    private final AbstractTokenRetriever abstractYoutubeTokenRetriever;
     private final CredentialsRetriever credentialsRetriever;
     private final NetHttpTransport netHttpTransport;
     private final GsonFactory gsonFactory;
     private final String applicationName;
 
     public YouTubeInstanceBuilder(
-        AbstractYouTubeTokenRetriever abstractYoutubeTokenRetriever,
+        AbstractTokenRetriever abstractYoutubeTokenRetriever,
         CredentialsRetriever credentialsRetriever,
         NetHttpTransport netHttpTransport,
         GsonFactory gsonFactory,
@@ -32,7 +32,7 @@ public class YouTubeInstanceBuilder {
 
     public Mono<YouTube> build() {
         return abstractYoutubeTokenRetriever.retrieve()
-            .map(YouTubeTokens::refreshToken)
+            .map(Tokens::refreshToken)
             .flatMap(credentialsRetriever::retrieve)
             .map(this::youTube);
     }

@@ -24,10 +24,10 @@ import static org.mockito.Mockito.when;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @ExtendWith(MockitoExtension.class)
-class YouTubeUploadProgressListenerTests {
-    private static final YouTubeUploadProgressListener LISTENER = new YouTubeUploadProgressListener();
+class UploadProgressListenerTests {
+    private static final UploadProgressListener LISTENER = new UploadProgressListener();
     private static final AppenderAttachable<ILoggingEvent> LOGGER =
-        (Logger) getLogger(YouTubeUploadProgressListener.class);
+        (Logger) getLogger(UploadProgressListener.class);
 
     @Mock
     private MediaHttpUploader mediaHttpUploader;

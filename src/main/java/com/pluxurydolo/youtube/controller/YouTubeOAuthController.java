@@ -1,6 +1,6 @@
 package com.pluxurydolo.youtube.controller;
 
-import com.pluxurydolo.youtube.service.YouTubeOAuthService;
+import com.pluxurydolo.youtube.service.OAuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,19 +9,19 @@ import reactor.core.publisher.Mono;
 
 @RestController
 public class YouTubeOAuthController {
-    private final YouTubeOAuthService youTubeOAuthService;
+    private final OAuthService oAuthService;
 
-    public YouTubeOAuthController(YouTubeOAuthService youTubeOAuthService) {
-        this.youTubeOAuthService = youTubeOAuthService;
+    public YouTubeOAuthController(OAuthService oAuthService) {
+        this.oAuthService = oAuthService;
     }
 
     @GetMapping("${youtube.login.url}")
     public Mono<ResponseEntity<Void>> login() {
-        return youTubeOAuthService.login();
+        return oAuthService.login();
     }
 
     @GetMapping("${youtube.redirect.url}")
     public Mono<String> callback(@RequestParam("code") String code) {
-        return youTubeOAuthService.callback(code);
+        return oAuthService.callback(code);
     }
 }

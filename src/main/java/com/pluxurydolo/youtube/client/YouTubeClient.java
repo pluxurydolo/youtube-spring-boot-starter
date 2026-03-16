@@ -9,7 +9,7 @@ import com.google.api.services.youtube.model.VideoStatus;
 import com.pluxurydolo.youtube.dto.MultipartFileWrapper;
 import com.pluxurydolo.youtube.exception.YouTubeUploadException;
 import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
-import com.pluxurydolo.youtube.util.YouTubeUploadProgressListener;
+import com.pluxurydolo.youtube.util.UploadProgressListener;
 import org.springframework.core.io.InputStreamSource;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -53,7 +53,7 @@ public class YouTubeClient {
 
             request.getMediaHttpUploader()
                 .setDirectUploadEnabled(false)
-                .setProgressListener(new YouTubeUploadProgressListener());
+                .setProgressListener(new UploadProgressListener());
 
             request.execute();
         } catch (IOException exception) {

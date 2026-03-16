@@ -1,6 +1,6 @@
 package com.pluxurydolo.youtube.controller;
 
-import com.pluxurydolo.youtube.service.YouTubeOAuthService;
+import com.pluxurydolo.youtube.service.OAuthService;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Mono;
@@ -14,7 +14,7 @@ import static org.springframework.http.HttpStatus.FOUND;
 import static reactor.test.StepVerifier.create;
 
 class YouTubeOAuthControllerTests {
-    private static final YouTubeOAuthService OAUTH_SERVICE = mock(YouTubeOAuthService.class);
+    private static final OAuthService OAUTH_SERVICE = mock(OAuthService.class);
     private static final YouTubeOAuthController OAUTH_CONTROLLER = new YouTubeOAuthController(OAUTH_SERVICE);
 
     @Test

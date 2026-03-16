@@ -7,10 +7,10 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.pluxurydolo.youtube.client.YouTubeClient;
 import com.pluxurydolo.youtube.controller.YouTubeOAuthController;
 import com.pluxurydolo.youtube.security.CredentialsRetriever;
-import com.pluxurydolo.youtube.security.secret.YouTubeClientSecretProvider;
-import com.pluxurydolo.youtube.security.token.AbstractYouTubeTokenRetriever;
-import com.pluxurydolo.youtube.security.token.AbstractYouTubeTokenSaver;
-import com.pluxurydolo.youtube.service.YouTubeOAuthService;
+import com.pluxurydolo.youtube.security.secret.ClientSecretProvider;
+import com.pluxurydolo.youtube.security.token.AbstractTokenRetriever;
+import com.pluxurydolo.youtube.security.token.AbstractTokenSaver;
+import com.pluxurydolo.youtube.service.OAuthService;
 import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @AutoConfiguration
-@ConditionalOnBean(YouTubeClientSecretProvider.class)
+@ConditionalOnBean(ClientSecretProvider.class)
 @ConditionalOnProperty(prefix = "youtube", name = "application-name")
 @ConditionalOnProperty(prefix = "youtube", name = "redirect.uri")
 public class YouTubeAutoConfiguration {
@@ -55,7 +55,7 @@ public class YouTubeAutoConfiguration {
     }
 
     @Bean
-    public GoogleClientSecrets googleClientSecrets(GsonFactory gsonFactory, YouTubeClientSecretProvider youtubeClientSecretProvider) {
+    public GoogleClientSecrets googleClientSecrets(GsonFactory gsonFactory, ClientSecretProvider youtubeClientSecretProvider) {
         InputStream clientSecret = youtubeClientSecretProvider.getClientSecret();
         InputStreamReader inputStreamReader = new InputStreamReader(clientSecret);
 
@@ -83,7 +83,7 @@ public class YouTubeAutoConfiguration {
 
     @Bean
     public YouTubeInstanceBuilder youTubeInstanceBuilder(
-        AbstractYouTubeTokenRetriever abstractYoutubeTokenRetriever,
+        AbstractTokenRetriever abstractYoutubeTokenRetriever,
         CredentialsRetriever credentialsRetriever,
         NetHttpTransport netHttpTransport,
         GsonFactory gsonFactory
@@ -98,16 +98,16 @@ public class YouTubeAutoConfiguration {
     }
 
     @Bean
-    public YouTubeOAuthController oauthController(YouTubeOAuthService youTubeOAuthService) {
-        return new YouTubeOAuthController(youTubeOAuthService);
+    public YouTubeOAuthController oauthController(OAuthService oAuthService) {
+        return new YouTubeOAuthController(oAuthService);
     }
 
     @Bean
-    public YouTubeOAuthService oauthService(
+    public OAuthService oauthService(
         GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow,
-        AbstractYouTubeTokenSaver abstractYouTubeTokenSaver
+        AbstractTokenSaver abstractTokenSaver
     ) {
-        return new YouTubeOAuthService(googleAuthorizationCodeFlow, abstractYouTubeTokenSaver, redirectUri);
+        return new OAuthService(googleAuthorizationCodeFlow, abstractTokenSaver, redirectUri);
     }
 
     @Bean

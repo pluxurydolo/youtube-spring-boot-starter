@@ -2,7 +2,7 @@ package com.pluxurydolo.youtube.service;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
-import com.pluxurydolo.youtube.security.token.AbstractYouTubeTokenSaver;
+import com.pluxurydolo.youtube.security.token.AbstractTokenSaver;
 import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -11,18 +11,18 @@ import java.net.URI;
 
 import static org.springframework.http.HttpStatus.FOUND;
 
-public class YouTubeOAuthService {
+public class OAuthService {
     private final GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow;
-    private final AbstractYouTubeTokenSaver abstractYouTubeTokenSaver;
+    private final AbstractTokenSaver abstractTokenSaver;
     private final String redirectUri;
 
-    public YouTubeOAuthService(
+    public OAuthService(
         GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow,
-        AbstractYouTubeTokenSaver abstractYouTubeTokenSaver,
+        AbstractTokenSaver abstractTokenSaver,
         String redirectUri
     ) {
         this.googleAuthorizationCodeFlow = googleAuthorizationCodeFlow;
-        this.abstractYouTubeTokenSaver = abstractYouTubeTokenSaver;
+        this.abstractTokenSaver = abstractTokenSaver;
         this.redirectUri = redirectUri;
     }
 
@@ -45,7 +45,7 @@ public class YouTubeOAuthService {
             .setRedirectUri(redirectUri);
 
         return Mono.fromCallable(tokenRequest::execute)
-            .flatMap(abstractYouTubeTokenSaver::save)
+            .flatMap(abstractTokenSaver::save)
             .subscribeOn(Schedulers.boundedElastic());
     }
 }

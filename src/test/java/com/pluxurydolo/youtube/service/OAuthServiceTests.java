@@ -4,7 +4,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
-import com.pluxurydolo.youtube.security.token.AbstractYouTubeTokenSaver;
+import com.pluxurydolo.youtube.security.token.AbstractTokenSaver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,13 +25,13 @@ import static org.springframework.test.util.ReflectionTestUtils.setField;
 import static reactor.test.StepVerifier.create;
 
 @ExtendWith(MockitoExtension.class)
-class YouTubeOAuthServiceTests {
+class OAuthServiceTests {
 
     @Mock
     private GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow;
 
     @Mock
-    private AbstractYouTubeTokenSaver abstractYouTubeTokenSaver;
+    private AbstractTokenSaver abstractTokenSaver;
 
     @Mock
     private GoogleAuthorizationCodeRequestUrl googleAuthorizationCodeRequestUrl;
@@ -43,11 +43,11 @@ class YouTubeOAuthServiceTests {
     private GoogleTokenResponse googleTokenResponse;
 
     @InjectMocks
-    private YouTubeOAuthService youTubeOAuthService;
+    private OAuthService oAuthService;
 
     @BeforeEach
     void setUp() {
-        setField(youTubeOAuthService, "redirectUri", "redirectUri");
+        setField(oAuthService, "redirectUri", "redirectUri");
     }
 
     @Test
@@ -59,7 +59,7 @@ class YouTubeOAuthServiceTests {
         when(googleAuthorizationCodeRequestUrl.build())
             .thenReturn("redirectUrl");
 
-        Mono<ResponseEntity<Void>> result = youTubeOAuthService.login();
+        Mono<ResponseEntity<Void>> result = oAuthService.login();
 
         create(result)
             .expectNext(responseEntity())
@@ -74,10 +74,10 @@ class YouTubeOAuthServiceTests {
             .thenReturn(googleAuthorizationCodeTokenRequest);
         when(googleAuthorizationCodeTokenRequest.execute())
             .thenReturn(googleTokenResponse);
-        when(abstractYouTubeTokenSaver.save(any()))
+        when(abstractTokenSaver.save(any()))
             .thenReturn(Mono.just(""));
 
-        Mono<String> result = youTubeOAuthService.callback("code");
+        Mono<String> result = oAuthService.callback("code");
 
         create(result)
             .expectNext("")
