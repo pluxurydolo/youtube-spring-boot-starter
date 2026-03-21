@@ -57,8 +57,8 @@ class YouTubeInstanceBuilderTests {
         Mono<YouTube> result = youTubeInstanceBuilder.build();
 
         create(result)
-            .expectNextMatches(it -> {
-                assertThat(it)
+            .expectNextMatches(youTube -> {
+                assertThat(youTube)
                     .usingRecursiveComparison()
                     .isEqualTo(youTube());
 
