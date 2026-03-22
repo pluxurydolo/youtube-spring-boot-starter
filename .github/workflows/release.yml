@@ -25,11 +25,10 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
 
-      - name: Make gradlew executable
-        run: chmod +x gradlew
-
       - name: Bump version
-        run: ./gradlew bumpVersion
+        uses: gradle/gradle-build-action@v3
+        with:
+          arguments: --no-daemon -i bumpVersion
 
       - name: Commit version update
         run: |
@@ -38,12 +37,12 @@ jobs:
           git add version.properties
           if ! git diff --cached --quiet; then
             git commit -m "chore: bump version [skip ci]"
-            git push
+            git push origin HEAD:main
           else
             echo "No changes to version.properties"
           fi
 
-      - name: Build and publish with Gradle
+      - name: Build and publish
         uses: gradle/gradle-build-action@v3
         with:
           arguments: --no-daemon -i jreleaserConfig build test publish
@@ -55,7 +54,7 @@ jobs:
           JRELEASER_MAVENCENTRAL_SONATYPE_TOKEN: ${{ secrets.JRELEASER_MAVENCENTRAL_SONATYPE_TOKEN }}
           JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.JRELEASER_GPG_PUBLIC_KEY }}
 
-      - name: Release with gradle
+      - name: Release
         uses: gradle/gradle-build-action@v3
         with:
           arguments: --no-daemon -i jreleaserFullRelease
