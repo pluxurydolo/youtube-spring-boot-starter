@@ -32,6 +32,7 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.java
+
                 pom {
                     name = 'youtube-spring-boot-starter'
                     description = 'YouTube Spring Boot Starter made for personal use'
