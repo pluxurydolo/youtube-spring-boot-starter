@@ -1,7 +1,6 @@
 import static org.jreleaser.model.Active.ALWAYS
 
 plugins {
-    id 'java'
     id 'java-library'
     id 'maven-publish'
     id 'org.springframework.boot' version "$springBootVersion"
@@ -13,6 +12,8 @@ plugins {
 group = 'io.github.pluxurydolo'
 
 java {
+    withJavadocJar()
+    withSourcesJar()
     toolchain {
         languageVersion = JavaLanguageVersion.of(25)
     }
@@ -22,10 +23,6 @@ bootJar {
     enabled = false
 }
 
-jar {
-    enabled = true
-}
-
 repositories {
     mavenCentral()
 }
@@ -33,23 +30,25 @@ repositories {
 afterEvaluate {
     publishing {
         publications {
-            release(MavenPublication) {
-                from components.java
+            withType(MavenPublication).configureEach {
                 pom {
                     name = 'youtube-spring-boot-starter'
-                    description = 'Spring Boot Starter for YouTube made for personal use'
-                    url = 'https://upload.wikimedia.org/wikipedia/en/c/ce/Randallkennedybook.jpg'
+                    description = 'YouTube Spring Boot Starter made for personal use'
+                    url = 'https://github.com/pluxurydolo/youtube-spring-boot-starter'
+
                     developers {
                         developer {
                             id = 'pluxurydolo'
                             name = 'Alexander'
                         }
                     }
+
                     scm {
                         url = 'scm:git:git://github.com/youtube-spring-boot-starter.git'
                         connection = 'scm:git:git://github.com/youtube-spring-boot-starter.git'
                         tag = project.version
                     }
+
                     licenses {
                         license {
                             name = 'The Apache License, Version 2.0'
@@ -59,6 +58,7 @@ afterEvaluate {
                 }
             }
         }
+
         repositories {
             maven {
                 url = uri layout.buildDirectory.dir('staging-deploy')
@@ -74,15 +74,18 @@ jreleaser {
             skipTag.set true
         }
     }
+
     signing {
         active.set ALWAYS
         armored.set true
         verify.set true
     }
+
     project {
         inceptionYear.set '2026'
         author('@pluxurydolo')
     }
+
     deploy {
         maven {
             mavenCentral.create('sonatype') {
