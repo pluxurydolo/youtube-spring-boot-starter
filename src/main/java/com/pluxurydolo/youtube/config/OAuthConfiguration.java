@@ -15,6 +15,8 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 @Configuration
 public class OAuthConfiguration {
 
@@ -35,7 +37,7 @@ public class OAuthConfiguration {
     @Bean
     public GoogleClientSecrets googleClientSecrets(GsonFactory gsonFactory, ClientSecretProvider youtubeClientSecretProvider) {
         InputStream clientSecret = youtubeClientSecretProvider.getClientSecret();
-        InputStreamReader inputStreamReader = new InputStreamReader(clientSecret);
+        InputStreamReader inputStreamReader = new InputStreamReader(clientSecret, UTF_8);
 
         try {
             return GoogleClientSecrets.load(gsonFactory, inputStreamReader);
