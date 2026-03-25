@@ -8,8 +8,8 @@ import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
 import com.pluxurydolo.youtube.dto.MultipartFileWrapper;
 import com.pluxurydolo.youtube.exception.YouTubeUploadException;
-import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
 import com.pluxurydolo.youtube.util.UploadProgressListener;
+import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
 import org.springframework.core.io.InputStreamSource;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -17,8 +17,9 @@ import reactor.core.scheduler.Schedulers;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 public class YouTubeClient {
     private final YouTubeInstanceBuilder youTubeInstanceBuilder;
@@ -79,7 +80,7 @@ public class YouTubeClient {
         snippet.setTitle(title);
         snippet.setDescription(description);
         snippet.setCategoryId("24");
-        snippet.setTags(Arrays.asList(tags));
+        snippet.setTags(asList(tags));
         return snippet;
     }
 

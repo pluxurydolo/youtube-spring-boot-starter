@@ -5,9 +5,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static java.nio.file.Files.copy;
+import static java.nio.file.Files.newInputStream;
+import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 public class MultipartFileWrapper implements MultipartFile {
@@ -50,16 +52,16 @@ public class MultipartFileWrapper implements MultipartFile {
 
     @Override
     public byte[] getBytes() throws IOException {
-        return Files.readAllBytes(filePath);
+        return readAllBytes(filePath);
     }
 
     @Override
     public InputStream getInputStream() throws IOException {
-        return Files.newInputStream(filePath);
+        return newInputStream(filePath);
     }
 
     @Override
     public void transferTo(File dest) throws IOException, IllegalStateException {
-        Files.copy(filePath, dest.toPath(), REPLACE_EXISTING);
+        copy(filePath, dest.toPath(), REPLACE_EXISTING);
     }
 }
