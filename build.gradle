@@ -108,10 +108,12 @@ jreleaser {
 }
 
 dependencies {
-    api "com.google.api-client:google-api-client:$googleApiClientVersion"
-    api "com.google.apis:google-api-services-youtube:$youtubeApiVersion"
     implementation "org.springframework.boot:spring-boot-starter:$springBootVersion"
     implementation "org.springframework.boot:spring-boot-starter-webflux:$springBootVersion"
+
+    implementation "com.google.api-client:google-api-client:$googleApiClientVersion"
+    implementation "com.google.apis:google-api-services-youtube:$youtubeApiVersion"
+
     testImplementation "org.springframework.boot:spring-boot-starter-webflux-test:$springBootVersion"
 }
 
