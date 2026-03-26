@@ -5,6 +5,10 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.pluxurydolo.youtube.client.YouTubeClient;
 import com.pluxurydolo.youtube.security.CredentialsRetriever;
 import com.pluxurydolo.youtube.security.token.AbstractTokenRetriever;
+import com.pluxurydolo.youtube.step.VideoBuilder;
+import com.pluxurydolo.youtube.step.VideoSender;
+import com.pluxurydolo.youtube.step.VideoSnippetBuilder;
+import com.pluxurydolo.youtube.step.VideoStatusBuilder;
 import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -19,8 +23,20 @@ public class ClientConfiguration {
     }
 
     @Bean
-    public YouTubeClient youTubeClient(YouTubeInstanceBuilder youTubeInstanceBuilder) {
-        return new YouTubeClient(youTubeInstanceBuilder);
+    public YouTubeClient youTubeClient(
+        YouTubeInstanceBuilder youTubeInstanceBuilder,
+        VideoSnippetBuilder videoSnippetBuilder,
+        VideoStatusBuilder videoStatusBuilder,
+        VideoBuilder videoBuilder,
+        VideoSender videoSender
+    ) {
+        return new YouTubeClient(
+            youTubeInstanceBuilder,
+            videoSnippetBuilder,
+            videoStatusBuilder,
+            videoBuilder,
+            videoSender
+        );
     }
 
     @Bean

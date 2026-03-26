@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Import;
     CoreConfiguration.class,
     OAuthConfiguration.class,
     WebConfiguration.class,
-    ClientConfiguration.class
+    ClientConfiguration.class,
+    StepConfiguration.class
 })
 public class YouTubeAutoConfiguration {
 }
