@@ -1,0 +1,35 @@
+package com.pluxurydolo.youtube.step;
+
+import com.google.api.services.youtube.model.Video;
+import com.google.api.services.youtube.model.VideoSnippet;
+import com.google.api.services.youtube.model.VideoStatus;
+import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class VideoBuilderTests {
+    private static final VideoBuilder BUILDER = new VideoBuilder();
+
+    @Test
+    void testBuild() {
+        Video result = BUILDER.build(videoSnippet(), videoStatus());
+
+        assertThat(result)
+            .isEqualTo(video());
+    }
+
+    private static VideoSnippet videoSnippet() {
+        return new VideoSnippet();
+    }
+
+    private static VideoStatus videoStatus() {
+        return new VideoStatus();
+    }
+
+    private static Video video() {
+        Video video = new Video();
+        video.setSnippet(videoSnippet());
+        video.setStatus(videoStatus());
+        return video;
+    }
+}
