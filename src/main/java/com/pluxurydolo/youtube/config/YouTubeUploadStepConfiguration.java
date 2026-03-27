@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class StepConfiguration {
+public class YouTubeUploadStepConfiguration {
 
     @Bean
     public VideoSnippetBuilder videoSnippetBuilder() {

@@ -18,7 +18,7 @@ import java.util.List;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Configuration
-public class OAuthConfiguration {
+public class YouTubeOAuthConfiguration {
 
     @Bean
     public GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow(
