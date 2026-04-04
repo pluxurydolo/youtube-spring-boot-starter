@@ -46,7 +46,7 @@ class UploadProgressListenerTests {
                     .hasSize(1);
 
                 assertThat(logs.getFirst().getFormattedMessage())
-                    .isEqualTo("zxkf Статус загрузки неизвестен");
+                    .isEqualTo("zxkf [youtube-starter] Статус загрузки неизвестен");
             });
     }
 
@@ -64,7 +64,7 @@ class UploadProgressListenerTests {
                     .hasSize(1);
 
                 assertThat(logs.getFirst().getFormattedMessage())
-                    .isEqualTo("sruc Инициализация загрузки видео");
+                    .isEqualTo("sruc [youtube-starter] Инициализация загрузки видео");
             });
     }
 
@@ -82,7 +82,7 @@ class UploadProgressListenerTests {
                     .hasSize(1);
 
                 assertThat(logs.getFirst().getFormattedMessage())
-                    .isEqualTo("ytwm Инициализация загрузки видео завершена");
+                    .isEqualTo("ytwm [youtube-starter] Инициализация загрузки видео завершена");
             });
     }
 
@@ -102,7 +102,7 @@ class UploadProgressListenerTests {
                     .hasSize(1);
 
                 assertThat(logs.getFirst().getFormattedMessage())
-                    .isEqualTo("bxnk Загружено: 33.6%");
+                    .isEqualTo("bxnk [youtube-starter] Загружено: 33.6%");
             });
     }
 
@@ -120,7 +120,7 @@ class UploadProgressListenerTests {
                     .hasSize(1);
 
                 assertThat(logs.getFirst().getFormattedMessage())
-                    .isEqualTo("hnlj Загрузка видео завершена");
+                    .isEqualTo("hnlj [youtube-starter] Загрузка видео завершена");
             });
     }
 
