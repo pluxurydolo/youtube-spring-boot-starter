@@ -29,16 +29,16 @@ public class UploadProgressListener implements MediaHttpUploaderProgressListener
 
     private static void logResult(MediaHttpUploader uploader, MediaHttpUploader.UploadState uploadState) {
         if (uploadState == INITIATION_STARTED) {
-            LOGGER.info("sruc Инициализация загрузки видео");
+            LOGGER.info("sruc [youtube-starter] Инициализация загрузки видео");
         } else if (uploadState == INITIATION_COMPLETE) {
-            LOGGER.info("ytwm Инициализация загрузки видео завершена");
+            LOGGER.info("ytwm [youtube-starter] Инициализация загрузки видео завершена");
         } else if (uploadState == MEDIA_IN_PROGRESS) {
             String formattedProgress = formattedProgress(uploader);
-            LOGGER.info("bxnk Загружено: {}%", formattedProgress);
+            LOGGER.info("bxnk [youtube-starter] Загружено: {}%", formattedProgress);
         } else if (uploadState == MEDIA_COMPLETE) {
-            LOGGER.info("hnlj Загрузка видео завершена");
+            LOGGER.info("hnlj [youtube-starter] Загрузка видео завершена");
         } else {
-            LOGGER.info("zxkf Статус загрузки неизвестен");
+            LOGGER.info("zxkf [youtube-starter] Статус загрузки неизвестен");
         }
     }
 
@@ -47,6 +47,7 @@ public class UploadProgressListener implements MediaHttpUploaderProgressListener
             double progress = uploader.getProgress() * 100;
             return String.format(US, "%.1f", progress);
         } catch (IOException exception) {
+            LOGGER.error("gvjg [youtube-starter] Произошла ошибка при получении прогресса загрузки");
             throw new YouTubeUploadException(exception);
         }
     }

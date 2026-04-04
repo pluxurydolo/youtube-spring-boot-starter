@@ -6,6 +6,8 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.pluxurydolo.youtube.security.CredentialsRetriever;
 import com.pluxurydolo.youtube.security.secret.ClientSecretProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,6 +21,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Configuration
 public class YouTubeOAuthConfiguration {
+    private static final Logger LOGGER = LoggerFactory.getLogger(YouTubeOAuthConfiguration.class);
 
     @Bean
     public GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow(
@@ -42,6 +45,7 @@ public class YouTubeOAuthConfiguration {
         try {
             return GoogleClientSecrets.load(gsonFactory, inputStreamReader);
         } catch (IOException exception) {
+            LOGGER.error("gxil [youtube-starter] Произошла ошибка при загрузке GoogleClientSecrets");
             throw new IllegalStateException(exception);
         }
     }
