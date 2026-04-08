@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 import static reactor.test.StepVerifier.create;
 
 @ExtendWith(MockitoExtension.class)
-class VideoSenderTests {
+class YouTubeVideoUploaderTests {
 
     @Mock
     private MediaHttpUploaderProgressListener progressListener;
@@ -51,10 +51,10 @@ class VideoSenderTests {
     private MediaHttpUploader mediaHttpUploader;
 
     @InjectMocks
-    private VideoSender videoSender;
+    private YouTubeVideoUploader youTubeVideoUploader;
 
     @Test
-    void testSendVideo() throws IOException {
+    void testUpload() throws IOException {
         when(multipartFile.getInputStream())
             .thenReturn(inputStream);
         when(youTube.videos())
@@ -70,7 +70,7 @@ class VideoSenderTests {
         when(insert.execute())
             .thenReturn(video);
 
-        Mono<Video> result = videoSender.sendVideo(youTube, multipartFile, List.of("parts"), video);
+        Mono<Video> result = youTubeVideoUploader.upload(youTube, multipartFile, List.of("parts"), video);
 
         create(result)
             .expectNext(video)
@@ -78,11 +78,11 @@ class VideoSenderTests {
     }
 
     @Test
-    void testSendVideoWhenExceptionOccurred() throws IOException {
+    void testUploadWhenExceptionOccurred() throws IOException {
         doThrow(IOException.class)
             .when(multipartFile).getInputStream();
 
-        Mono<Video> result = videoSender.sendVideo(youTube, multipartFile, List.of("parts"), video);
+        Mono<Video> result = youTubeVideoUploader.upload(youTube, multipartFile, List.of("parts"), video);
 
         create(result)
             .expectError(YouTubeUploadException.class)

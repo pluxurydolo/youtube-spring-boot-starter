@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class VideoStatusBuilderTests {
-    private static final VideoStatusBuilder BUILDER = new VideoStatusBuilder();
+class YouTubeVideoStatusBuilderTests {
+    private static final YouTubeVideoStatusBuilder BUILDER = new YouTubeVideoStatusBuilder();
 
     @Test
     void testBuild() {

@@ -12,14 +12,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-public class VideoSender {
+public class YouTubeVideoUploader {
     private final MediaHttpUploaderProgressListener progressListener;
 
-    public VideoSender(MediaHttpUploaderProgressListener progressListener) {
+    public YouTubeVideoUploader(MediaHttpUploaderProgressListener progressListener) {
         this.progressListener = progressListener;
     }
 
-    public Mono<Video> sendVideo(YouTube youTube, InputStreamSource multipartFile, List<String> parts, Video video) {
+    public Mono<Video> upload(YouTube youTube, InputStreamSource multipartFile, List<String> parts, Video video) {
         try {
             InputStream inputStream = multipartFile.getInputStream();
             InputStreamContent inputStreamContent = new InputStreamContent("video/mp4", inputStream);

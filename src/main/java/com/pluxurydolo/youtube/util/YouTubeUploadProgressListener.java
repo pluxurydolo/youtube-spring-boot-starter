@@ -16,8 +16,8 @@ import static com.google.api.client.googleapis.media.MediaHttpUploader.UploadSta
 import static com.google.api.client.googleapis.media.MediaHttpUploader.UploadState.MEDIA_IN_PROGRESS;
 import static java.util.Locale.US;
 
-public class UploadProgressListener implements MediaHttpUploaderProgressListener {
-    private static final Logger LOGGER = LoggerFactory.getLogger(UploadProgressListener.class);
+public class YouTubeUploadProgressListener implements MediaHttpUploaderProgressListener {
+    private static final Logger LOGGER = LoggerFactory.getLogger(YouTubeUploadProgressListener.class);
 
     @Override
     public void progressChanged(MediaHttpUploader uploader) {

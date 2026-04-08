@@ -1,10 +1,10 @@
 package com.pluxurydolo.youtube.config;
 
-import com.pluxurydolo.youtube.step.VideoBuilder;
-import com.pluxurydolo.youtube.step.VideoSender;
-import com.pluxurydolo.youtube.step.VideoSnippetBuilder;
-import com.pluxurydolo.youtube.step.VideoStatusBuilder;
-import com.pluxurydolo.youtube.util.UploadProgressListener;
+import com.pluxurydolo.youtube.step.YouTubeVideoBuilder;
+import com.pluxurydolo.youtube.step.YouTubeVideoUploader;
+import com.pluxurydolo.youtube.step.YouTubeVideoSnippetBuilder;
+import com.pluxurydolo.youtube.step.YouTubeVideoStatusBuilder;
+import com.pluxurydolo.youtube.util.YouTubeUploadProgressListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,27 +12,27 @@ import org.springframework.context.annotation.Configuration;
 public class YouTubeUploadStepConfiguration {
 
     @Bean
-    public VideoSnippetBuilder videoSnippetBuilder() {
-        return new VideoSnippetBuilder();
+    public YouTubeVideoSnippetBuilder youTubeVideoSnippetBuilder() {
+        return new YouTubeVideoSnippetBuilder();
     }
 
     @Bean
-    public VideoStatusBuilder videoStatusBuilder() {
-        return new VideoStatusBuilder();
+    public YouTubeVideoStatusBuilder youTubeVideoStatusBuilder() {
+        return new YouTubeVideoStatusBuilder();
     }
 
     @Bean
-    public VideoBuilder videoBuilder() {
-        return new VideoBuilder();
+    public YouTubeVideoBuilder youTubeVideoBuilder() {
+        return new YouTubeVideoBuilder();
     }
 
     @Bean
-    public VideoSender videoSender(UploadProgressListener uploadProgressListener) {
-        return new VideoSender(uploadProgressListener);
+    public YouTubeVideoUploader youTubeVideoUploader(YouTubeUploadProgressListener youTubeUploadProgressListener) {
+        return new YouTubeVideoUploader(youTubeUploadProgressListener);
     }
 
     @Bean
-    public UploadProgressListener uploadProgressListener() {
-        return new UploadProgressListener();
+    public YouTubeUploadProgressListener youTubeUploadProgressListener() {
+        return new YouTubeUploadProgressListener();
     }
 }

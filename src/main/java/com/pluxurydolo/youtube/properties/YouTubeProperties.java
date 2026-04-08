@@ -8,6 +8,15 @@ public record YouTubeProperties(
     String applicationName,
 
     @Name("redirect.uri")
-    String redirectUri
+    String redirectUri,
+
+    @Name("login.url")
+    String loginUrl,
+
+    @Name("redirect.url")
+    String redirectUrl,
+
+    @Name("refresh.url")
+    String refreshUrl
 ) {
 }

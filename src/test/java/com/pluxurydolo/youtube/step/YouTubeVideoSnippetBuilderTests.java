@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class VideoSnippetBuilderTests {
-    private static final VideoSnippetBuilder BUILDER = new VideoSnippetBuilder();
+class YouTubeVideoSnippetBuilderTests {
+    private static final YouTubeVideoSnippetBuilder BUILDER = new YouTubeVideoSnippetBuilder();
 
     @Test
     void testBuild() {

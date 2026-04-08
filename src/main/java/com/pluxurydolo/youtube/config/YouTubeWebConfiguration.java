@@ -2,9 +2,10 @@ package com.pluxurydolo.youtube.config;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.pluxurydolo.youtube.controller.YouTubeOAuthController;
+import com.pluxurydolo.youtube.flow.YouTubeRefreshTokenFlow;
 import com.pluxurydolo.youtube.properties.YouTubeProperties;
-import com.pluxurydolo.youtube.security.token.AbstractTokenSaver;
-import com.pluxurydolo.youtube.service.OAuthService;
+import com.pluxurydolo.youtube.service.YouTubeOAuthService;
+import com.pluxurydolo.youtube.token.AbstractTokenSaver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,17 +13,22 @@ import org.springframework.context.annotation.Configuration;
 public class YouTubeWebConfiguration {
 
     @Bean
-    public YouTubeOAuthController youTubeOAuthController(OAuthService oAuthService) {
-        return new YouTubeOAuthController(oAuthService);
+    public YouTubeOAuthController youTubeOAuthController(YouTubeOAuthService youTubeOAuthService) {
+        return new YouTubeOAuthController(youTubeOAuthService);
     }
 
     @Bean
-    public OAuthService oauthService(
+    public YouTubeOAuthService youTubeOAuthService(
         GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow,
+        YouTubeRefreshTokenFlow youTubeRefreshTokenFlow,
         AbstractTokenSaver abstractTokenSaver,
         YouTubeProperties youTubeProperties
     ) {
-        String redirectUri = youTubeProperties.redirectUri();
-        return new OAuthService(googleAuthorizationCodeFlow, abstractTokenSaver, redirectUri);
+        return new YouTubeOAuthService(
+            googleAuthorizationCodeFlow,
+            abstractTokenSaver,
+            youTubeRefreshTokenFlow,
+            youTubeProperties
+        );
     }
 }
