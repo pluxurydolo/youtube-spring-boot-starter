@@ -1,0 +1,17 @@
+youtube:
+  enabled: true
+  application-name: app-name
+  login:
+    url: /app-name/v1/youtube/login
+  redirect:
+    uri: http://localhost:8888$/app-name/v1/youtube/login/redirect
+    url: /app-name/v1/youtube/login/redirect
+  refresh:
+    url: /app-name/v1/youtube/refresh
+    token:
+      scheduler:
+        cron: "0 0 0 * * SUN"
+        zone: Europe/Moscow
+spring:
+  main:
+    allow-bean-definition-overriding: true

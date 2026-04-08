@@ -5,10 +5,10 @@ import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
 import com.pluxurydolo.youtube.dto.request.UploadVideoRequest;
-import com.pluxurydolo.youtube.step.VideoBuilder;
-import com.pluxurydolo.youtube.step.VideoSender;
-import com.pluxurydolo.youtube.step.VideoSnippetBuilder;
-import com.pluxurydolo.youtube.step.VideoStatusBuilder;
+import com.pluxurydolo.youtube.step.YouTubeVideoBuilder;
+import com.pluxurydolo.youtube.step.YouTubeVideoUploader;
+import com.pluxurydolo.youtube.step.YouTubeVideoSnippetBuilder;
+import com.pluxurydolo.youtube.step.YouTubeVideoStatusBuilder;
 import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,16 +33,16 @@ class YouTubeClientTests {
     private YouTubeInstanceBuilder youTubeInstanceBuilder;
 
     @Mock
-    private VideoSnippetBuilder videoSnippetBuilder;
+    private YouTubeVideoSnippetBuilder youTubeVideoSnippetBuilder;
 
     @Mock
-    private VideoStatusBuilder videoStatusBuilder;
+    private YouTubeVideoStatusBuilder youTubeVideoStatusBuilder;
 
     @Mock
-    private VideoBuilder videoBuilder;
+    private YouTubeVideoBuilder youTubeVideoBuilder;
 
     @Mock
-    private VideoSender videoSender;
+    private YouTubeVideoUploader youTubeVideoUploader;
 
     @Mock
     private VideoSnippet videoSnippet;
@@ -61,15 +61,15 @@ class YouTubeClientTests {
 
     @Test
     void testUploadVideo() {
-        when(videoSnippetBuilder.build(anyString(), anyString(), any()))
+        when(youTubeVideoSnippetBuilder.build(anyString(), anyString(), any()))
             .thenReturn(videoSnippet);
-        when(videoStatusBuilder.build())
+        when(youTubeVideoStatusBuilder.build())
             .thenReturn(videoStatus);
-        when(videoBuilder.build(any(), any()))
+        when(youTubeVideoBuilder.build(any(), any()))
             .thenReturn(video);
         when(youTubeInstanceBuilder.build())
             .thenReturn(Mono.just(youTube));
-        when(videoSender.sendVideo(any(), any(), anyList(), any()))
+        when(youTubeVideoUploader.upload(any(), any(), anyList(), any()))
             .thenReturn(Mono.just(video));
 
         Mono<String> result = youTubeClient.uploadVideo(uploadVideoRequest());

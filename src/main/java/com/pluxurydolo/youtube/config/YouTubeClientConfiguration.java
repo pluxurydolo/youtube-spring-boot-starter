@@ -4,12 +4,12 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.pluxurydolo.youtube.client.YouTubeClient;
 import com.pluxurydolo.youtube.properties.YouTubeProperties;
-import com.pluxurydolo.youtube.security.CredentialsRetriever;
-import com.pluxurydolo.youtube.security.token.AbstractTokenRetriever;
-import com.pluxurydolo.youtube.step.VideoBuilder;
-import com.pluxurydolo.youtube.step.VideoSender;
-import com.pluxurydolo.youtube.step.VideoSnippetBuilder;
-import com.pluxurydolo.youtube.step.VideoStatusBuilder;
+import com.pluxurydolo.youtube.token.YouTubeTokenRefresher;
+import com.pluxurydolo.youtube.token.AbstractTokenRetriever;
+import com.pluxurydolo.youtube.step.YouTubeVideoBuilder;
+import com.pluxurydolo.youtube.step.YouTubeVideoUploader;
+import com.pluxurydolo.youtube.step.YouTubeVideoSnippetBuilder;
+import com.pluxurydolo.youtube.step.YouTubeVideoStatusBuilder;
 import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,24 +20,24 @@ public class YouTubeClientConfiguration {
     @Bean
     public YouTubeClient youTubeClient(
         YouTubeInstanceBuilder youTubeInstanceBuilder,
-        VideoSnippetBuilder videoSnippetBuilder,
-        VideoStatusBuilder videoStatusBuilder,
-        VideoBuilder videoBuilder,
-        VideoSender videoSender
+        YouTubeVideoSnippetBuilder youTubeVideoSnippetBuilder,
+        YouTubeVideoStatusBuilder youTubeVideoStatusBuilder,
+        YouTubeVideoBuilder youTubeVideoBuilder,
+        YouTubeVideoUploader youTubeVideoUploader
     ) {
         return new YouTubeClient(
             youTubeInstanceBuilder,
-            videoSnippetBuilder,
-            videoStatusBuilder,
-            videoBuilder,
-            videoSender
+            youTubeVideoSnippetBuilder,
+            youTubeVideoStatusBuilder,
+            youTubeVideoBuilder,
+            youTubeVideoUploader
         );
     }
 
     @Bean
     public YouTubeInstanceBuilder youTubeInstanceBuilder(
-        AbstractTokenRetriever abstractYoutubeTokenRetriever,
-        CredentialsRetriever credentialsRetriever,
+        AbstractTokenRetriever abstractTokenRetriever,
+        YouTubeTokenRefresher youTubeTokenRefresher,
         NetHttpTransport netHttpTransport,
         GsonFactory gsonFactory,
         YouTubeProperties youTubeProperties
@@ -45,8 +45,8 @@ public class YouTubeClientConfiguration {
         String applicationName = youTubeProperties.applicationName();
 
         return new YouTubeInstanceBuilder(
-            abstractYoutubeTokenRetriever,
-            credentialsRetriever,
+            abstractTokenRetriever,
+            youTubeTokenRefresher,
             netHttpTransport,
             gsonFactory,
             applicationName

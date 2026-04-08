@@ -1,4 +1,4 @@
-package com.pluxurydolo.youtube.security.secret;
+package com.pluxurydolo.youtube.secret;
 
 import java.io.InputStream;
 

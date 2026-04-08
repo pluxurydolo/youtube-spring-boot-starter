@@ -1,4 +1,4 @@
-package com.pluxurydolo.youtube.security.token;
+package com.pluxurydolo.youtube.token;
 
 import com.pluxurydolo.youtube.dto.Tokens;
 import reactor.core.publisher.Mono;
