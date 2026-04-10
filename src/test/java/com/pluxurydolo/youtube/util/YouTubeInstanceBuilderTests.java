@@ -5,8 +5,8 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.pluxurydolo.youtube.dto.Tokens;
-import com.pluxurydolo.youtube.security.CredentialsRetriever;
-import com.pluxurydolo.youtube.security.token.AbstractTokenRetriever;
+import com.pluxurydolo.youtube.token.YouTubeTokenRefresher;
+import com.pluxurydolo.youtube.token.AbstractTokenRetriever;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,10 +25,10 @@ import static reactor.test.StepVerifier.create;
 class YouTubeInstanceBuilderTests {
 
     @Mock
-    private AbstractTokenRetriever abstractYoutubeTokenRetriever;
+    private AbstractTokenRetriever abstractTokenRetriever;
 
     @Mock
-    private CredentialsRetriever credentialsRetriever;
+    private YouTubeTokenRefresher youTubeTokenRefresher;
 
     @Mock
     private NetHttpTransport netHttpTransport;
@@ -49,9 +49,9 @@ class YouTubeInstanceBuilderTests {
 
     @Test
     void testBuild() {
-        when(abstractYoutubeTokenRetriever.retrieve())
+        when(abstractTokenRetriever.retrieve())
             .thenReturn(Mono.just(new Tokens("accessToken", "refreshToken")));
-        when(credentialsRetriever.retrieve(anyString()))
+        when(youTubeTokenRefresher.refresh(anyString()))
             .thenReturn(Mono.just(httpCredentialsAdapter));
 
         Mono<YouTube> result = youTubeInstanceBuilder.build();

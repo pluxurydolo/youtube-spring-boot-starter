@@ -1,4 +1,4 @@
-package com.pluxurydolo.youtube.security;
+package com.pluxurydolo.youtube.token;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.auth.http.HttpCredentialsAdapter;
@@ -6,14 +6,16 @@ import com.google.auth.oauth2.UserCredentials;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-public class CredentialsRetriever {
+public class YouTubeTokenRefresher {
     private final GoogleClientSecrets googleClientSecrets;
+    private final AbstractTokenSaver abstractTokenSaver;
 
-    public CredentialsRetriever(GoogleClientSecrets googleClientSecrets) {
+    public YouTubeTokenRefresher(GoogleClientSecrets googleClientSecrets, AbstractTokenSaver abstractTokenSaver) {
         this.googleClientSecrets = googleClientSecrets;
+        this.abstractTokenSaver = abstractTokenSaver;
     }
 
-    public Mono<HttpCredentialsAdapter> retrieve(String refreshToken) {
+    public Mono<HttpCredentialsAdapter> refresh(String refreshToken) {
         return userCredentials(refreshToken)
             .map(HttpCredentialsAdapter::new);
     }
@@ -30,6 +32,7 @@ public class CredentialsRetriever {
             .build();
 
         return Mono.fromCallable(userCredentials::refreshAccessToken)
+            .flatMap(response -> abstractTokenSaver.save(response, refreshToken))
             .thenReturn(userCredentials)
             .subscribeOn(Schedulers.boundedElastic());
     }

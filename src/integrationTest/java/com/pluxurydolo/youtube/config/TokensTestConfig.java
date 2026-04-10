@@ -1,5 +1,6 @@
 package com.pluxurydolo.youtube.config;
 
+import com.google.auth.Credentials;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.pluxurydolo.youtube.token.AbstractTokenRetriever;
 import com.pluxurydolo.youtube.token.AbstractTokenSaver;
@@ -8,8 +9,10 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import reactor.core.publisher.Mono;
 
+import java.time.Clock;
 import java.util.Map;
 
+import static java.time.Clock.systemUTC;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -25,7 +28,7 @@ public class TokensTestConfig {
             public Mono<Map<String, String>> retrieveTokens() {
                 return Mono.just(
                     Map.of(
-                        "exchange_token", "exchangeToken",
+                        "refresh_token", "refreshToken",
                         "access_token", "accessToken"
                     )
                 );
@@ -35,11 +38,11 @@ public class TokensTestConfig {
 
     @Bean
     public AbstractTokenSaver abstractTokensSaver() {
-        return new AbstractTokenSaver() {
+        return new AbstractTokenSaver(systemUTC()) {
 
             @Override
             public Mono<String> saveTokens(Map<String, String> tokens) {
-                return Mono.just("");
+                return Mono.just("saveTokens");
             }
         };
     }
@@ -48,10 +51,20 @@ public class TokensTestConfig {
     public YouTubeTokenRefresher youTubeTokenRefresher() {
         YouTubeTokenRefresher youTubeTokenRefresher = mock(YouTubeTokenRefresher.class);
         HttpCredentialsAdapter httpCredentialsAdapter = mock(HttpCredentialsAdapter.class);
+        Credentials credentials = mock(Credentials.class);
 
         when(youTubeTokenRefresher.refresh(anyString()))
             .thenReturn(Mono.just(httpCredentialsAdapter));
+        when(httpCredentialsAdapter.getCredentials())
+            .thenReturn(credentials);
+        when(credentials.getAuthenticationType())
+            .thenReturn("authenticationType");
 
         return youTubeTokenRefresher;
+    }
+
+    @Bean
+    public Clock clock() {
+        return systemUTC();
     }
 }

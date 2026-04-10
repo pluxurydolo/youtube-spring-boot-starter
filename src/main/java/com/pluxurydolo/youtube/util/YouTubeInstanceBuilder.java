@@ -5,35 +5,35 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.pluxurydolo.youtube.dto.Tokens;
-import com.pluxurydolo.youtube.security.CredentialsRetriever;
-import com.pluxurydolo.youtube.security.token.AbstractTokenRetriever;
+import com.pluxurydolo.youtube.token.YouTubeTokenRefresher;
+import com.pluxurydolo.youtube.token.AbstractTokenRetriever;
 import reactor.core.publisher.Mono;
 
 public class YouTubeInstanceBuilder {
-    private final AbstractTokenRetriever abstractYoutubeTokenRetriever;
-    private final CredentialsRetriever credentialsRetriever;
+    private final AbstractTokenRetriever abstractTokenRetriever;
+    private final YouTubeTokenRefresher youTubeTokenRefresher;
     private final NetHttpTransport netHttpTransport;
     private final GsonFactory gsonFactory;
     private final String applicationName;
 
     public YouTubeInstanceBuilder(
-        AbstractTokenRetriever abstractYoutubeTokenRetriever,
-        CredentialsRetriever credentialsRetriever,
+        AbstractTokenRetriever abstractTokenRetriever,
+        YouTubeTokenRefresher youTubeTokenRefresher,
         NetHttpTransport netHttpTransport,
         GsonFactory gsonFactory,
         String applicationName
     ) {
-        this.abstractYoutubeTokenRetriever = abstractYoutubeTokenRetriever;
-        this.credentialsRetriever = credentialsRetriever;
+        this.abstractTokenRetriever = abstractTokenRetriever;
+        this.youTubeTokenRefresher = youTubeTokenRefresher;
         this.netHttpTransport = netHttpTransport;
         this.gsonFactory = gsonFactory;
         this.applicationName = applicationName;
     }
 
     public Mono<YouTube> build() {
-        return abstractYoutubeTokenRetriever.retrieve()
+        return abstractTokenRetriever.retrieve()
             .map(Tokens::refreshToken)
-            .flatMap(credentialsRetriever::retrieve)
+            .flatMap(youTubeTokenRefresher::refresh)
             .map(this::youTube);
     }
 

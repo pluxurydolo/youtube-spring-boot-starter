@@ -4,8 +4,7 @@ import com.google.api.client.auth.oauth2.TokenResponse;
 import com.google.auth.oauth2.AccessToken;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.Clock;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +13,12 @@ import static java.time.LocalDateTime.now;
 import static java.time.format.DateTimeFormatter.ofPattern;
 
 public abstract class AbstractTokenSaver {
+    private final Clock clock;
+
+    protected AbstractTokenSaver(Clock clock) {
+        this.clock = clock;
+    }
+
     public Mono<String> save(TokenResponse response) {
         String accessToken = response.getAccessToken();
         String refreshToken = response.getRefreshToken();
@@ -58,9 +63,9 @@ public abstract class AbstractTokenSaver {
         return join(" ", scopes);
     }
 
-    private static String updatedAt() {
-        LocalDateTime now = now(ZoneId.of("Europe/Moscow"));
-        return now.format(ofPattern("yyyy-MM-dd HH:mm:ss 'МСК'"));
+    private String updatedAt() {
+        return now(clock)
+            .format(ofPattern("yyyy-MM-dd HH:mm:ss 'МСК'"));
     }
 
     protected abstract Mono<String> saveTokens(Map<String, String> tokens);

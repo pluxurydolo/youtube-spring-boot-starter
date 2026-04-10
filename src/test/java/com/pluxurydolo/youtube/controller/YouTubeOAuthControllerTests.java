@@ -1,51 +1,62 @@
 package com.pluxurydolo.youtube.controller;
 
-import com.pluxurydolo.youtube.service.OAuthService;
+import com.pluxurydolo.youtube.service.YouTubeOAuthService;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.ResponseEntity;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
-
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpStatus.FOUND;
 import static reactor.test.StepVerifier.create;
 
+@ExtendWith(MockitoExtension.class)
 class YouTubeOAuthControllerTests {
-    private static final OAuthService OAUTH_SERVICE = mock(OAuthService.class);
-    private static final YouTubeOAuthController OAUTH_CONTROLLER = new YouTubeOAuthController(OAUTH_SERVICE);
+
+    @Mock
+    private YouTubeOAuthService youTubeOAuthService;
+
+    @Mock
+    private ServerWebExchange serverWebExchange;
+
+    @InjectMocks
+    private YouTubeOAuthController youTubeOAuthController;
 
     @Test
     void testLogin() {
-        when(OAUTH_SERVICE.login())
-            .thenReturn(Mono.just(responseEntity()));
+        when(youTubeOAuthService.login(serverWebExchange))
+            .thenReturn(Mono.empty());
 
-        Mono<ResponseEntity<Void>> result = OAUTH_CONTROLLER.login();
+        Mono<Void> result = youTubeOAuthController.login(serverWebExchange);
 
         create(result)
-            .expectNext(responseEntity())
             .verifyComplete();
     }
 
     @Test
     void testCallback() {
-        when(OAUTH_SERVICE.callback(anyString()))
+        when(youTubeOAuthService.callback(anyString()))
             .thenReturn(Mono.just(""));
 
-        Mono<String> result = OAUTH_CONTROLLER.callback("code");
+        Mono<String> result = youTubeOAuthController.callback("code");
 
         create(result)
             .expectNext("")
             .verifyComplete();
     }
 
-    private static ResponseEntity<Void> responseEntity() {
-        URI uri = URI.create("redirectUri");
+    @Test
+    void testRefreshToken() {
+        when(youTubeOAuthService.refreshToken())
+            .thenReturn(Mono.just(""));
 
-        return ResponseEntity.status(FOUND)
-            .location(uri)
-            .build();
+        Mono<String> result = youTubeOAuthController.refreshToken();
+
+        create(result)
+            .expectNext("")
+            .verifyComplete();
     }
 }

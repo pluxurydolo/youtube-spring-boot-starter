@@ -4,8 +4,11 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
-import com.pluxurydolo.youtube.security.CredentialsRetriever;
-import com.pluxurydolo.youtube.security.secret.ClientSecretProvider;
+import com.pluxurydolo.youtube.flow.YouTubeRefreshTokenFlow;
+import com.pluxurydolo.youtube.secret.ClientSecretProvider;
+import com.pluxurydolo.youtube.token.AbstractTokenRetriever;
+import com.pluxurydolo.youtube.token.AbstractTokenSaver;
+import com.pluxurydolo.youtube.token.YouTubeTokenRefresher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -38,8 +41,8 @@ public class YouTubeOAuthConfiguration {
     }
 
     @Bean
-    public GoogleClientSecrets googleClientSecrets(GsonFactory gsonFactory, ClientSecretProvider youtubeClientSecretProvider) {
-        InputStream clientSecret = youtubeClientSecretProvider.getClientSecret();
+    public GoogleClientSecrets googleClientSecrets(GsonFactory gsonFactory, ClientSecretProvider clientSecretProvider) {
+        InputStream clientSecret = clientSecretProvider.getClientSecret();
         InputStreamReader inputStreamReader = new InputStreamReader(clientSecret, UTF_8);
 
         try {
@@ -51,7 +54,18 @@ public class YouTubeOAuthConfiguration {
     }
 
     @Bean
-    public CredentialsRetriever credentialsRetriever(GoogleClientSecrets googleClientSecrets) {
-        return new CredentialsRetriever(googleClientSecrets);
+    public YouTubeTokenRefresher youTubeTokenRefresher(
+        GoogleClientSecrets googleClientSecrets,
+        AbstractTokenSaver abstractTokenSaver
+    ) {
+        return new YouTubeTokenRefresher(googleClientSecrets, abstractTokenSaver);
+    }
+
+    @Bean
+    public YouTubeRefreshTokenFlow youTubeRefreshTokenFlow(
+        AbstractTokenRetriever abstractTokenRetriever,
+        YouTubeTokenRefresher youTubeTokenRefresher
+    ) {
+        return new YouTubeRefreshTokenFlow(abstractTokenRetriever, youTubeTokenRefresher);
     }
 }
