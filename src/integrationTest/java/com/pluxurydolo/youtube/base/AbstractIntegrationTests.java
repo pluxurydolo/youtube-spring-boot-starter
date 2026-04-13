@@ -27,8 +27,7 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFOR
     "youtube.redirect.url=/app-name/v1/youtube/login/redirect",
     "youtube.refresh.url=/app-name/v1/youtube/refresh",
     "youtube.refresh.token.scheduler.cron=0 0 0 * * SUN",
-    "youtube.refresh.token.scheduler.zone=Europe/Moscow",
-    "youtube.rate-limit.threshold=5"
+    "youtube.refresh.token.scheduler.zone=Europe/Moscow"
 })
 public abstract class AbstractIntegrationTests {
 }
