@@ -11,6 +11,7 @@ import com.pluxurydolo.youtube.token.AbstractTokenSaver;
 import com.pluxurydolo.youtube.token.YouTubeTokenRefresher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,6 +28,7 @@ public class YouTubeOAuthConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(YouTubeOAuthConfiguration.class);
 
     @Bean
+    @ConditionalOnMissingBean
     public GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow(
         NetHttpTransport netHttpTransport,
         GsonFactory gsonFactory,
@@ -41,6 +43,7 @@ public class YouTubeOAuthConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public GoogleClientSecrets googleClientSecrets(GsonFactory gsonFactory, ClientSecretProvider clientSecretProvider) {
         InputStream clientSecret = clientSecretProvider.getClientSecret();
         InputStreamReader inputStreamReader = new InputStreamReader(clientSecret, UTF_8);
@@ -54,6 +57,7 @@ public class YouTubeOAuthConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public YouTubeTokenRefresher youTubeTokenRefresher(
         GoogleClientSecrets googleClientSecrets,
         AbstractTokenSaver abstractTokenSaver
@@ -62,6 +66,7 @@ public class YouTubeOAuthConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public YouTubeRefreshTokenFlow youTubeRefreshTokenFlow(
         AbstractTokenRetriever abstractTokenRetriever,
         YouTubeTokenRefresher youTubeTokenRefresher

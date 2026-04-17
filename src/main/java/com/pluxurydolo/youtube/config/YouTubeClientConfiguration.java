@@ -11,6 +11,7 @@ import com.pluxurydolo.youtube.step.YouTubeVideoUploader;
 import com.pluxurydolo.youtube.step.YouTubeVideoSnippetBuilder;
 import com.pluxurydolo.youtube.step.YouTubeVideoStatusBuilder;
 import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 public class YouTubeClientConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean
     public YouTubeClient youTubeClient(
         YouTubeInstanceBuilder youTubeInstanceBuilder,
         YouTubeVideoSnippetBuilder youTubeVideoSnippetBuilder,
@@ -35,6 +37,7 @@ public class YouTubeClientConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public YouTubeInstanceBuilder youTubeInstanceBuilder(
         AbstractTokenRetriever abstractTokenRetriever,
         YouTubeTokenRefresher youTubeTokenRefresher,

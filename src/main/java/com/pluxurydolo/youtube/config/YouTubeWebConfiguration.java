@@ -6,6 +6,7 @@ import com.pluxurydolo.youtube.flow.YouTubeRefreshTokenFlow;
 import com.pluxurydolo.youtube.properties.YouTubeProperties;
 import com.pluxurydolo.youtube.service.YouTubeOAuthService;
 import com.pluxurydolo.youtube.token.AbstractTokenSaver;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,11 +14,13 @@ import org.springframework.context.annotation.Configuration;
 public class YouTubeWebConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean
     public YouTubeOAuthController youTubeOAuthController(YouTubeOAuthService youTubeOAuthService) {
         return new YouTubeOAuthController(youTubeOAuthService);
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public YouTubeOAuthService youTubeOAuthService(
         GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow,
         YouTubeRefreshTokenFlow youTubeRefreshTokenFlow,

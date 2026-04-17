@@ -3,6 +3,7 @@ package com.pluxurydolo.youtube.config;
 import com.pluxurydolo.youtube.flow.YouTubeRefreshTokenFlow;
 import com.pluxurydolo.youtube.scheduler.YouTubeRefreshTokenScheduler;
 import com.pluxurydolo.youtube.scheduler.handler.YouTubeRefreshTokenSchedulerHandler;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -12,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class YouTubeSchedulingConfiguration {
 
     @Bean
+    @ConditionalOnMissingBean
     public YouTubeRefreshTokenScheduler youTubeRefreshTokenScheduler(
         YouTubeRefreshTokenSchedulerHandler youTubeRefreshTokenSchedulerHandler
     ) {
@@ -19,6 +21,7 @@ public class YouTubeSchedulingConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     public YouTubeRefreshTokenSchedulerHandler youTubeRefreshTokenSchedulerHandler(
         YouTubeRefreshTokenFlow youTubeRefreshTokenFlow
     ) {
