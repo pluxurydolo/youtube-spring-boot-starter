@@ -17,6 +17,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -80,7 +82,7 @@ class YouTubeClientTests {
         byte[] bytes = {};
         String title = "title";
         String description = "description";
-        String[] tags = {"tag1", "tag2"};
+        List<String> tags = List.of("tag1", "tag2");
         return new UploadVideoRequest(bytes, title, description, tags);
     }
 }
