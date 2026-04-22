@@ -39,7 +39,9 @@ public class YouTubeClient {
         byte[] bytes = request.bytes();
         String title = request.title();
         String description = request.description();
-        String[] tags = request.tags();
+
+        String[] tags = request.tags()
+            .toArray(new String[0]);
 
         VideoSnippet videoSnippet = youTubeVideoSnippetBuilder.build(title, description, tags);
         VideoStatus videoStatus = youTubeVideoStatusBuilder.build();
