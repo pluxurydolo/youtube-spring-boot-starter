@@ -6,9 +6,9 @@ import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
 import com.pluxurydolo.youtube.dto.request.UploadVideoRequest;
 import com.pluxurydolo.youtube.step.YouTubeVideoBuilder;
-import com.pluxurydolo.youtube.step.YouTubeVideoUploader;
 import com.pluxurydolo.youtube.step.YouTubeVideoSnippetBuilder;
 import com.pluxurydolo.youtube.step.YouTubeVideoStatusBuilder;
+import com.pluxurydolo.youtube.step.YouTubeVideoUploader;
 import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,12 +17,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import reactor.core.publisher.Mono;
 
-import java.io.File;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static reactor.test.StepVerifier.create;
 
@@ -80,10 +77,10 @@ class YouTubeClientTests {
     }
 
     private static UploadVideoRequest uploadVideoRequest() {
-        File file = mock(File.class);
+        byte[] bytes = {};
         String title = "title";
         String description = "description";
         String[] tags = {"tag1", "tag2"};
-        return new UploadVideoRequest(file, title, description, tags);
+        return new UploadVideoRequest(bytes, title, description, tags);
     }
 }

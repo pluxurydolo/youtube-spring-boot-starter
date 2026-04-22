@@ -3,18 +3,15 @@ package com.pluxurydolo.youtube.client;
 import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
-import com.pluxurydolo.youtube.dto.MultipartFileWrapper;
 import com.pluxurydolo.youtube.dto.request.UploadVideoRequest;
 import com.pluxurydolo.youtube.step.YouTubeVideoBuilder;
-import com.pluxurydolo.youtube.step.YouTubeVideoUploader;
 import com.pluxurydolo.youtube.step.YouTubeVideoSnippetBuilder;
 import com.pluxurydolo.youtube.step.YouTubeVideoStatusBuilder;
+import com.pluxurydolo.youtube.step.YouTubeVideoUploader;
 import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
-import org.springframework.core.io.InputStreamSource;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.File;
 import java.util.List;
 
 public class YouTubeClient {
@@ -39,7 +36,7 @@ public class YouTubeClient {
     }
 
     public Mono<String> uploadVideo(UploadVideoRequest request) {
-        File file = request.file();
+        byte[] bytes = request.bytes();
         String title = request.title();
         String description = request.description();
         String[] tags = request.tags();
@@ -49,10 +46,9 @@ public class YouTubeClient {
         Video video = youTubeVideoBuilder.build(videoSnippet, videoStatus);
 
         List<String> parts = List.of("snippet", "status");
-        InputStreamSource multipartFile = new MultipartFileWrapper(file);
 
         return youTubeInstanceBuilder.build()
-            .flatMap(youTube -> youTubeVideoUploader.upload(youTube, multipartFile, parts, video))
+            .flatMap(youTube -> youTubeVideoUploader.upload(bytes, youTube, parts, video))
             .thenReturn(title)
             .subscribeOn(Schedulers.boundedElastic());
     }

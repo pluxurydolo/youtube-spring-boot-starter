@@ -5,9 +5,9 @@ import com.google.api.client.http.InputStreamContent;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.Video;
 import com.pluxurydolo.youtube.exception.YouTubeUploadException;
-import org.springframework.core.io.InputStreamSource;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -19,9 +19,9 @@ public class YouTubeVideoUploader {
         this.progressListener = progressListener;
     }
 
-    public Mono<Video> upload(YouTube youTube, InputStreamSource multipartFile, List<String> parts, Video video) {
+    public Mono<Video> upload(byte[] bytes, YouTube youTube, List<String> parts, Video video) {
         try {
-            InputStream inputStream = multipartFile.getInputStream();
+            InputStream inputStream = new ByteArrayInputStream(bytes);
             InputStreamContent inputStreamContent = new InputStreamContent("video/mp4", inputStream);
 
             YouTube.Videos.Insert request = youTube.videos()
