@@ -1,6 +1,6 @@
 package com.pluxurydolo.youtube.filter;
 
-import com.pluxurydolo.youtube.properties.YouTubeProperties;
+import com.pluxurydolo.youtube.properties.YouTubeEndpointProperties;
 import com.pluxurydolo.youtube.validator.RequestParamValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ class YouTubeRequestParamValidationFilterTests {
     private RequestParamValidator requestParamValidator;
 
     @Mock
-    private YouTubeProperties youTubeProperties;
+    private YouTubeEndpointProperties youTubeEndpointProperties;
 
     @Mock
     private ServerWebExchange serverWebExchange;
@@ -56,12 +56,12 @@ class YouTubeRequestParamValidationFilterTests {
 
     @BeforeEach
     void setUp() {
-        when(youTubeProperties.loginUrl())
+        when(youTubeEndpointProperties.loginUrl())
             .thenReturn("loginUrl");
-        when(youTubeProperties.redirectUrl())
+        when(youTubeEndpointProperties.redirectUrl())
             .thenReturn("redirectUrl");
-        when(youTubeProperties.refreshUrl())
-            .thenReturn("refreshUrl");
+        when(youTubeEndpointProperties.refreshTokenUrl())
+            .thenReturn("refreshTokenUrl");
         when(serverWebExchange.getRequest())
             .thenReturn(serverHttpRequest);
         when(serverHttpRequest.getURI())
@@ -145,9 +145,9 @@ class YouTubeRequestParamValidationFilterTests {
     }
 
     @Test
-    void testFilterWithRefreshPath() {
+    void testFilterWithRefreshTokenPath() {
         when(uri.getPath())
-            .thenReturn("refreshUrl");
+            .thenReturn("refreshTokenUrl");
         when(serverHttpRequest.getQueryParams())
             .thenReturn(queryParams());
         when(requestParamValidator.validate(anyString()))
@@ -162,9 +162,9 @@ class YouTubeRequestParamValidationFilterTests {
     }
 
     @Test
-    void testFilterWithRefreshPathWhenValidationFailed() {
+    void testFilterWithRefreshTokenPathWhenValidationFailed() {
         when(uri.getPath())
-            .thenReturn("refreshUrl");
+            .thenReturn("refreshTokenUrl");
         when(serverHttpRequest.getQueryParams())
             .thenReturn(queryParams());
         when(requestParamValidator.validate(anyString()))

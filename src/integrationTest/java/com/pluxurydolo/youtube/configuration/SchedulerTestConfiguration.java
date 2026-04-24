@@ -1,4 +1,4 @@
-package com.pluxurydolo.youtube.config;
+package com.pluxurydolo.youtube.configuration;
 
 import com.pluxurydolo.youtube.scheduler.hook.RefreshTokenSchedulerHandlerHook;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import reactor.core.publisher.Mono;
 
 @TestConfiguration
-public class SchedulerTestConfig {
+public class SchedulerTestConfiguration {
 
     @Bean
     public RefreshTokenSchedulerHandlerHook refreshTokenSchedulerHook() {

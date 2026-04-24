@@ -1,9 +1,9 @@
-package com.pluxurydolo.youtube.config;
+package com.pluxurydolo.youtube.configuration;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.pluxurydolo.youtube.controller.YouTubeOAuthController;
 import com.pluxurydolo.youtube.flow.YouTubeRefreshTokenFlow;
-import com.pluxurydolo.youtube.properties.YouTubeProperties;
+import com.pluxurydolo.youtube.properties.YouTubeAuthProperties;
 import com.pluxurydolo.youtube.service.YouTubeOAuthService;
 import com.pluxurydolo.youtube.token.AbstractTokenSaver;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -25,13 +25,13 @@ public class YouTubeWebConfiguration {
         GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow,
         YouTubeRefreshTokenFlow youTubeRefreshTokenFlow,
         AbstractTokenSaver abstractTokenSaver,
-        YouTubeProperties youTubeProperties
+        YouTubeAuthProperties youTubeAuthProperties
     ) {
         return new YouTubeOAuthService(
             googleAuthorizationCodeFlow,
             abstractTokenSaver,
             youTubeRefreshTokenFlow,
-            youTubeProperties
+            youTubeAuthProperties
         );
     }
 }

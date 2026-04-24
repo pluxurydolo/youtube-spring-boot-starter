@@ -1,0 +1,137 @@
+{
+  "properties": [
+    {
+      "name": "youtube.auth.application-name",
+      "type": "java.lang.String",
+      "description": "YouTube Application Name.",
+      "sourceType": "com.pluxurydolo.youtube.properties.YouTubeAuthProperties"
+    },
+    {
+      "name": "youtube.auth.redirect-uri",
+      "type": "java.lang.String",
+      "description": "URI редиректа после логина.",
+      "sourceType": "com.pluxurydolo.youtube.properties.YouTubeAuthProperties"
+    },
+    {
+      "name": "youtube.endpoint.login",
+      "type": "java.lang.String",
+      "description": "Эндпоинт логина.",
+      "sourceType": "com.pluxurydolo.youtube.properties.YouTubeEndpointProperties"
+    },
+    {
+      "name": "youtube.endpoint.redirect",
+      "type": "java.lang.String",
+      "description": "Эндпоинт редиректа после логина.",
+      "sourceType": "com.pluxurydolo.youtube.properties.YouTubeEndpointProperties"
+    },
+    {
+      "name": "youtube.endpoint.refresh-token",
+      "type": "java.lang.String",
+      "description": "Эндпоинт для обновления токена.",
+      "sourceType": "com.pluxurydolo.youtube.properties.YouTubeEndpointProperties"
+    },
+    {
+      "name": "youtube.scheduler.refresh-token.cron",
+      "type": "java.lang.String",
+      "description": "Cron обновления токена."
+    },
+    {
+      "name": "youtube.scheduler.refresh-token.zone",
+      "type": "java.lang.String",
+      "description": "Временная зона выполнения cron по обновлению токена."
+    }
+  ],
+  "hints": [
+    {
+      "name": "youtube.auth.application-name",
+      "values": [
+        {
+          "value": "${YOUTUBE_APPLICATION_NAME}"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "youtube.auth.redirect-uri",
+      "values": [
+        {
+          "value": "http://localhost:8888${youtube.redirect.url}"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "youtube.endpoint.login",
+      "values": [
+        {
+          "value": "/${spring.application.name}/v1/youtube/login"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "youtube.endpoint.redirect",
+      "values": [
+        {
+          "value": "/${spring.application.name}/v1/youtube/login/redirect"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "youtube.endpoint.refresh-token",
+      "values": [
+        {
+          "value": "/${spring.application.name}/v1/youtube/token/refresh"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "youtube.scheduler.refresh-token.cron",
+      "values": [
+        {
+          "value": "0 0 0 * * SUN"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "youtube.scheduler.refresh-token.zone",
+      "values": [
+        {
+          "value": "Europe/Moscow"
+        }
+      ],
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    }
+  ]
+}

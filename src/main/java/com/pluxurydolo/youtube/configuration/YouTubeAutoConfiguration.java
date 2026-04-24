@@ -1,12 +1,16 @@
-package com.pluxurydolo.youtube.config;
+package com.pluxurydolo.youtube.configuration;
 
-import com.pluxurydolo.youtube.properties.YouTubeProperties;
+import com.pluxurydolo.youtube.properties.YouTubeAuthProperties;
+import com.pluxurydolo.youtube.properties.YouTubeEndpointProperties;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
 
 @AutoConfiguration
-@EnableConfigurationProperties(YouTubeProperties.class)
+@EnableConfigurationProperties({
+    YouTubeAuthProperties.class,
+    YouTubeEndpointProperties.class
+})
 @Import({
     YouTubeCoreConfiguration.class,
     YouTubeOAuthConfiguration.class,

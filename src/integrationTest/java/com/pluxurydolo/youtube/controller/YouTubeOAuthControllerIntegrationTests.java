@@ -32,7 +32,7 @@ class YouTubeOAuthControllerIntegrationTests extends AbstractControllerIntegrati
     @Test
     void testRefresh() {
         webTestClient.get()
-            .uri("/app-name/v1/youtube/refresh")
+            .uri("/app-name/v1/youtube/refresh-token")
             .exchange()
             .expectStatus().isOk()
             .expectBody(String.class)

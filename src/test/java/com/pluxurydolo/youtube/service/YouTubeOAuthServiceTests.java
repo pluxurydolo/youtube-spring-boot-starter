@@ -5,7 +5,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeReque
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.pluxurydolo.youtube.flow.YouTubeRefreshTokenFlow;
-import com.pluxurydolo.youtube.properties.YouTubeProperties;
+import com.pluxurydolo.youtube.properties.YouTubeAuthProperties;
 import com.pluxurydolo.youtube.token.AbstractTokenSaver;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +38,7 @@ class YouTubeOAuthServiceTests {
     private YouTubeRefreshTokenFlow youTubeRefreshTokenFlow;
 
     @Mock
-    private YouTubeProperties youTubeProperties;
+    private YouTubeAuthProperties youTubeAuthProperties;
 
     @Mock
     private GoogleAuthorizationCodeRequestUrl googleAuthorizationCodeRequestUrl;
@@ -65,7 +65,7 @@ class YouTubeOAuthServiceTests {
     void testLogin() {
         doNothing()
             .when(httpHeaders).setLocation(any());
-        when(youTubeProperties.redirectUri())
+        when(youTubeAuthProperties.redirectUri())
             .thenReturn("redirectUri");
         when(googleAuthorizationCodeFlow.newAuthorizationUrl())
             .thenReturn(googleAuthorizationCodeRequestUrl);
@@ -87,8 +87,8 @@ class YouTubeOAuthServiceTests {
     }
 
     @Test
-    void testCallback() throws IOException {
-        when(youTubeProperties.redirectUri())
+    void testRedirect() throws IOException {
+        when(youTubeAuthProperties.redirectUri())
             .thenReturn("redirectUri");
         when(googleAuthorizationCodeFlow.newTokenRequest(anyString()))
             .thenReturn(googleAuthorizationCodeTokenRequest);
@@ -99,7 +99,7 @@ class YouTubeOAuthServiceTests {
         when(abstractTokenSaver.save(any()))
             .thenReturn(Mono.just(""));
 
-        Mono<String> result = youTubeOAuthService.callback("code");
+        Mono<String> result = youTubeOAuthService.redirect("code");
 
         create(result)
             .expectNext("")

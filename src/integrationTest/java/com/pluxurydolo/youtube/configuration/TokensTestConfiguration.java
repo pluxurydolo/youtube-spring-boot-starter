@@ -1,4 +1,4 @@
-package com.pluxurydolo.youtube.config;
+package com.pluxurydolo.youtube.configuration;
 
 import com.google.auth.Credentials;
 import com.google.auth.http.HttpCredentialsAdapter;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @TestConfiguration
-public class TokensTestConfig {
+public class TokensTestConfiguration {
 
     @Bean
     public AbstractTokenRetriever abstractTokensRetriever() {

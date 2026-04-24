@@ -1,4 +1,4 @@
-package com.pluxurydolo.youtube.config;
+package com.pluxurydolo.youtube.configuration;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @TestConfiguration
-public class SecretTestConfig {
+public class SecretTestConfiguration {
 
     @Bean
     public GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow() throws IOException {

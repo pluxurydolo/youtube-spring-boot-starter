@@ -18,19 +18,19 @@ public class YouTubeOAuthController {
         this.youTubeOAuthService = youTubeOAuthService;
     }
 
-    @GetMapping("${youtube.login.url}")
+    @GetMapping("${youtube.endpoint.login}")
     @ConcurrencyLimit(limit = 1, policy = REJECT)
     public Mono<Void> login(ServerWebExchange serverWebExchange) {
         return youTubeOAuthService.login(serverWebExchange);
     }
 
-    @GetMapping("${youtube.redirect.url}")
+    @GetMapping("${youtube.endpoint.redirect}")
     @ConcurrencyLimit(limit = 1, policy = REJECT)
-    public Mono<String> callback(@RequestParam("code") String code) {
-        return youTubeOAuthService.callback(code);
+    public Mono<String> redirect(@RequestParam("code") String code) {
+        return youTubeOAuthService.redirect(code);
     }
 
-    @GetMapping("${youtube.refresh.url}")
+    @GetMapping("${youtube.endpoint.refresh-token}")
     @ConcurrencyLimit(limit = 1, policy = REJECT)
     public Mono<String> refreshToken() {
         return youTubeOAuthService.refreshToken();

@@ -1,4 +1,4 @@
-package com.pluxurydolo.youtube.config;
+package com.pluxurydolo.youtube.configuration;
 
 import com.pluxurydolo.youtube.validator.RequestParamValidator;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 import static com.pluxurydolo.youtube.validator.ValidationResult.SUCCESS;
 
 @TestConfiguration
-public class ValidatorTestConfig {
+public class ValidatorTestConfiguration {
 
     @Bean
     public RequestParamValidator requestParamValidator() {

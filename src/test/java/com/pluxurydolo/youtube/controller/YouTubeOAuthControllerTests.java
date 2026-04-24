@@ -37,11 +37,11 @@ class YouTubeOAuthControllerTests {
     }
 
     @Test
-    void testCallback() {
-        when(youTubeOAuthService.callback(anyString()))
+    void testRedirect() {
+        when(youTubeOAuthService.redirect(anyString()))
             .thenReturn(Mono.just(""));
 
-        Mono<String> result = youTubeOAuthController.callback("code");
+        Mono<String> result = youTubeOAuthController.redirect("code");
 
         create(result)
             .expectNext("")

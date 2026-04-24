@@ -3,7 +3,7 @@ package com.pluxurydolo.youtube.service;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.pluxurydolo.youtube.flow.YouTubeRefreshTokenFlow;
-import com.pluxurydolo.youtube.properties.YouTubeProperties;
+import com.pluxurydolo.youtube.properties.YouTubeAuthProperties;
 import com.pluxurydolo.youtube.token.AbstractTokenSaver;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
@@ -19,22 +19,22 @@ public class YouTubeOAuthService {
     private final GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow;
     private final AbstractTokenSaver abstractTokenSaver;
     private final YouTubeRefreshTokenFlow youTubeRefreshTokenFlow;
-    private final YouTubeProperties youTubeProperties;
+    private final YouTubeAuthProperties youTubeAuthProperties;
 
     public YouTubeOAuthService(
         GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow,
         AbstractTokenSaver abstractTokenSaver,
         YouTubeRefreshTokenFlow youTubeRefreshTokenFlow,
-        YouTubeProperties youTubeProperties
+        YouTubeAuthProperties youTubeAuthProperties
     ) {
         this.googleAuthorizationCodeFlow = googleAuthorizationCodeFlow;
         this.abstractTokenSaver = abstractTokenSaver;
         this.youTubeRefreshTokenFlow = youTubeRefreshTokenFlow;
-        this.youTubeProperties = youTubeProperties;
+        this.youTubeAuthProperties = youTubeAuthProperties;
     }
 
     public Mono<Void> login(ServerWebExchange serverWebExchange) {
-        String redirectUri = youTubeProperties.redirectUri();
+        String redirectUri = youTubeAuthProperties.redirectUri();
 
         String authorizationUrl = googleAuthorizationCodeFlow.newAuthorizationUrl()
             .setRedirectUri(redirectUri)
@@ -49,8 +49,8 @@ public class YouTubeOAuthService {
         return response.setComplete();
     }
 
-    public Mono<String> callback(String code) {
-        String redirectUri = youTubeProperties.redirectUri();
+    public Mono<String> redirect(String code) {
+        String redirectUri = youTubeAuthProperties.redirectUri();
 
         GoogleAuthorizationCodeTokenRequest tokenRequest = googleAuthorizationCodeFlow.newTokenRequest(code)
             .setRedirectUri(redirectUri);

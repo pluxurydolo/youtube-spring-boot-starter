@@ -11,8 +11,8 @@ public class YouTubeRefreshTokenScheduler {
     }
 
     @Scheduled(
-        cron = "${youtube.refresh.token.scheduler.cron}",
-        zone = "${youtube.refresh.token.scheduler.zone}"
+        cron = "${youtube.scheduler.refresh-token.cron}",
+        zone = "${youtube.scheduler.refresh-token.zone}"
     )
     public void schedule() {
         String jobName = getClass().getName();

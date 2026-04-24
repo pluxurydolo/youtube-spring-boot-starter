@@ -1,9 +1,9 @@
-package com.pluxurydolo.youtube.config;
+package com.pluxurydolo.youtube.configuration;
 
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.pluxurydolo.youtube.client.YouTubeClient;
-import com.pluxurydolo.youtube.properties.YouTubeProperties;
+import com.pluxurydolo.youtube.properties.YouTubeAuthProperties;
 import com.pluxurydolo.youtube.token.YouTubeTokenRefresher;
 import com.pluxurydolo.youtube.token.AbstractTokenRetriever;
 import com.pluxurydolo.youtube.step.YouTubeVideoBuilder;
@@ -43,9 +43,9 @@ public class YouTubeClientConfiguration {
         YouTubeTokenRefresher youTubeTokenRefresher,
         NetHttpTransport netHttpTransport,
         GsonFactory gsonFactory,
-        YouTubeProperties youTubeProperties
+        YouTubeAuthProperties youTubeAuthProperties
     ) {
-        String applicationName = youTubeProperties.applicationName();
+        String applicationName = youTubeAuthProperties.applicationName();
 
         return new YouTubeInstanceBuilder(
             abstractTokenRetriever,

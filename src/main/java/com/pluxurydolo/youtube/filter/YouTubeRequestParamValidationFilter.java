@@ -1,6 +1,6 @@
 package com.pluxurydolo.youtube.filter;
 
-import com.pluxurydolo.youtube.properties.YouTubeProperties;
+import com.pluxurydolo.youtube.properties.YouTubeEndpointProperties;
 import com.pluxurydolo.youtube.validator.RequestParamValidator;
 import com.pluxurydolo.youtube.validator.ValidationResult;
 import org.springframework.core.annotation.Order;
@@ -18,26 +18,26 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 @Order(HIGHEST_PRECEDENCE)
 public class YouTubeRequestParamValidationFilter implements WebFilter {
     private final RequestParamValidator requestParamValidator;
-    private final YouTubeProperties youTubeProperties;
+    private final YouTubeEndpointProperties youTubeEndpointProperties;
 
     public YouTubeRequestParamValidationFilter(
         RequestParamValidator requestParamValidator,
-        YouTubeProperties youTubeProperties
+        YouTubeEndpointProperties youTubeEndpointProperties
     ) {
         this.requestParamValidator = requestParamValidator;
-        this.youTubeProperties = youTubeProperties;
+        this.youTubeEndpointProperties = youTubeEndpointProperties;
     }
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        String loginUrl = youTubeProperties.loginUrl();
-        String redirectUrl = youTubeProperties.redirectUrl();
-        String refreshUrl = youTubeProperties.refreshUrl();
+        String loginUrl = youTubeEndpointProperties.loginUrl();
+        String redirectUrl = youTubeEndpointProperties.redirectUrl();
+        String refreshTokenUrl = youTubeEndpointProperties.refreshTokenUrl();
 
         ServerHttpRequest request = exchange.getRequest();
         String path = request.getURI().getPath();
 
-        if (!path.equals(loginUrl) && !path.equals(redirectUrl) && !path.equals(refreshUrl)) {
+        if (!path.equals(loginUrl) && !path.equals(redirectUrl) && !path.equals(refreshTokenUrl)) {
             return chain.filter(exchange);
         }
 
