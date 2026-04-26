@@ -2,14 +2,11 @@ package com.pluxurydolo.youtube.configuration;
 
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
-import com.pluxurydolo.youtube.client.YouTubeClient;
+import com.pluxurydolo.youtube.client.YouTubeVideoClient;
 import com.pluxurydolo.youtube.properties.YouTubeAuthProperties;
-import com.pluxurydolo.youtube.token.YouTubeTokenRefresher;
-import com.pluxurydolo.youtube.token.AbstractTokenRetriever;
-import com.pluxurydolo.youtube.step.YouTubeVideoBuilder;
 import com.pluxurydolo.youtube.step.YouTubeVideoUploader;
-import com.pluxurydolo.youtube.step.YouTubeVideoSnippetBuilder;
-import com.pluxurydolo.youtube.step.YouTubeVideoStatusBuilder;
+import com.pluxurydolo.youtube.token.AbstractTokenRetriever;
+import com.pluxurydolo.youtube.token.YouTubeTokenRefresher;
 import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -20,20 +17,8 @@ public class YouTubeClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public YouTubeClient youTubeClient(
-        YouTubeInstanceBuilder youTubeInstanceBuilder,
-        YouTubeVideoSnippetBuilder youTubeVideoSnippetBuilder,
-        YouTubeVideoStatusBuilder youTubeVideoStatusBuilder,
-        YouTubeVideoBuilder youTubeVideoBuilder,
-        YouTubeVideoUploader youTubeVideoUploader
-    ) {
-        return new YouTubeClient(
-            youTubeInstanceBuilder,
-            youTubeVideoSnippetBuilder,
-            youTubeVideoStatusBuilder,
-            youTubeVideoBuilder,
-            youTubeVideoUploader
-        );
+    public YouTubeVideoClient youTubeVideoClient(YouTubeVideoUploader youTubeVideoUploader) {
+        return new YouTubeVideoClient(youTubeVideoUploader);
     }
 
     @Bean

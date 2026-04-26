@@ -1,9 +1,11 @@
 package com.pluxurydolo.youtube.configuration;
 
+import com.google.api.client.googleapis.media.MediaHttpUploaderProgressListener;
 import com.pluxurydolo.youtube.step.YouTubeVideoBuilder;
-import com.pluxurydolo.youtube.step.YouTubeVideoUploader;
 import com.pluxurydolo.youtube.step.YouTubeVideoSnippetBuilder;
 import com.pluxurydolo.youtube.step.YouTubeVideoStatusBuilder;
+import com.pluxurydolo.youtube.step.YouTubeVideoUploader;
+import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
 import com.pluxurydolo.youtube.util.YouTubeUploadProgressListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -32,8 +34,20 @@ public class YouTubeUploadStepConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public YouTubeVideoUploader youTubeVideoUploader(YouTubeUploadProgressListener youTubeUploadProgressListener) {
-        return new YouTubeVideoUploader(youTubeUploadProgressListener);
+    public YouTubeVideoUploader youTubeVideoUploader(
+        YouTubeInstanceBuilder youTubeInstanceBuilder,
+        YouTubeVideoSnippetBuilder youTubeVideoSnippetBuilder,
+        YouTubeVideoStatusBuilder youTubeVideoStatusBuilder,
+        YouTubeVideoBuilder youTubeVideoBuilder,
+        MediaHttpUploaderProgressListener progressListener
+    ) {
+        return new YouTubeVideoUploader(
+            youTubeInstanceBuilder,
+            youTubeVideoSnippetBuilder,
+            youTubeVideoStatusBuilder,
+            youTubeVideoBuilder,
+            progressListener
+        );
     }
 
     @Bean

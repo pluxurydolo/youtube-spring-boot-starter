@@ -4,7 +4,10 @@ import com.google.api.client.googleapis.media.MediaHttpUploader;
 import com.google.api.client.googleapis.media.MediaHttpUploaderProgressListener;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.Video;
-import com.pluxurydolo.youtube.exception.YouTubeUploadException;
+import com.google.api.services.youtube.model.VideoSnippet;
+import com.google.api.services.youtube.model.VideoStatus;
+import com.pluxurydolo.youtube.dto.request.UploadVideoRequest;
+import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,7 +21,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static reactor.test.StepVerifier.create;
 
@@ -26,10 +29,28 @@ import static reactor.test.StepVerifier.create;
 class YouTubeVideoUploaderTests {
 
     @Mock
+    private YouTubeInstanceBuilder youTubeInstanceBuilder;
+
+    @Mock
+    private YouTubeVideoSnippetBuilder youTubeVideoSnippetBuilder;
+
+    @Mock
+    private YouTubeVideoStatusBuilder youTubeVideoStatusBuilder;
+
+    @Mock
+    private YouTubeVideoBuilder youTubeVideoBuilder;
+
+    @Mock
     private MediaHttpUploaderProgressListener progressListener;
 
     @Mock
     private YouTube youTube;
+
+    @Mock
+    private VideoSnippet videoSnippet;
+
+    @Mock
+    private VideoStatus videoStatus;
 
     @Mock
     private Video video;
@@ -48,6 +69,14 @@ class YouTubeVideoUploaderTests {
 
     @Test
     void testUpload() throws IOException {
+        when(youTubeInstanceBuilder.build())
+            .thenReturn(Mono.just(youTube));
+        when(youTubeVideoSnippetBuilder.build(anyString(), anyString(), any()))
+            .thenReturn(videoSnippet);
+        when(youTubeVideoStatusBuilder.build())
+            .thenReturn(videoStatus);
+        when(youTubeVideoBuilder.build(any(), any()))
+            .thenReturn(video);
         when(youTube.videos())
             .thenReturn(videos);
         when(videos.insert(anyList(), any(), any()))
@@ -61,28 +90,28 @@ class YouTubeVideoUploaderTests {
         when(insert.execute())
             .thenReturn(video);
 
-        Mono<Video> result = youTubeVideoUploader.upload(bytes(), youTube, List.of("parts"), video);
+        Mono<String> result = youTubeVideoUploader.upload(uploadVideoRequest());
 
         create(result)
-            .expectNext(video)
+            .expectNext("title")
             .verifyComplete();
     }
 
     @Test
-    void testUploadWhenExceptionOccurred() throws IOException {
-        when(youTube.videos())
-            .thenReturn(videos);
-        doThrow(IOException.class)
-            .when(videos).insert(anyList(), any(), any());
+    void testUploadWhenExceptionOccurred() {
+        when(youTubeInstanceBuilder.build())
+            .thenReturn(Mono.error(new RuntimeException()));
 
-        Mono<Video> result = youTubeVideoUploader.upload(bytes(), youTube, List.of("parts"), video);
+        Mono<String> result = youTubeVideoUploader.upload(uploadVideoRequest());
 
         create(result)
-            .expectError(YouTubeUploadException.class)
+            .expectError(RuntimeException.class)
             .verify();
     }
 
-    private static byte[] bytes() {
-        return new byte[]{};
+    private static UploadVideoRequest uploadVideoRequest() {
+        byte[] bytes = {};
+        List<String> tags = List.of("tag1", "tag2");
+        return new UploadVideoRequest(bytes, "title", "description", tags);
     }
 }
