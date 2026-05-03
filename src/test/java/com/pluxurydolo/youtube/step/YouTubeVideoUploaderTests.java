@@ -105,8 +105,7 @@ class YouTubeVideoUploaderTests {
         Mono<String> result = youTubeVideoUploader.upload(uploadVideoRequest());
 
         create(result)
-            .expectError(RuntimeException.class)
-            .verify();
+            .verifyErrorMatches(throwable -> throwable.getClass().equals(RuntimeException.class));
     }
 
     private static UploadVideoRequest uploadVideoRequest() {

@@ -1,6 +1,7 @@
 package com.pluxurydolo.youtube.client;
 
 import com.pluxurydolo.youtube.dto.request.UploadVideoRequest;
+import com.pluxurydolo.youtube.exception.YouTubeUploadException;
 import com.pluxurydolo.youtube.step.YouTubeVideoUploader;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,8 +45,7 @@ class YouTubeVideoClientTests {
         Mono<String> result = youTubeVideoClient.uploadVideo(uploadVideoRequest());
 
         create(result)
-            .expectError(RuntimeException.class)
-            .verify();
+            .verifyErrorMatches(throwable -> throwable.getClass().equals(YouTubeUploadException.class));
     }
 
     private static UploadVideoRequest uploadVideoRequest() {
