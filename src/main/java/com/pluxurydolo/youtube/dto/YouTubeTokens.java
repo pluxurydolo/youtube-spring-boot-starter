@@ -1,6 +1,6 @@
 package com.pluxurydolo.youtube.dto;
 
-public record Tokens(
+public record YouTubeTokens(
     String accessToken,
     String refreshToken
 ) {

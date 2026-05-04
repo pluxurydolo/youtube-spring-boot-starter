@@ -4,7 +4,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.auth.http.HttpCredentialsAdapter;
-import com.pluxurydolo.youtube.dto.Tokens;
+import com.pluxurydolo.youtube.dto.YouTubeTokens;
 import com.pluxurydolo.youtube.token.YouTubeTokenRefresher;
 import com.pluxurydolo.youtube.token.AbstractTokenRetriever;
 import reactor.core.publisher.Mono;
@@ -32,7 +32,7 @@ public class YouTubeInstanceBuilder {
 
     public Mono<YouTube> build() {
         return abstractTokenRetriever.retrieve()
-            .map(Tokens::refreshToken)
+            .map(YouTubeTokens::refreshToken)
             .flatMap(youTubeTokenRefresher::refresh)
             .map(this::youTube);
     }

@@ -4,9 +4,9 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.auth.http.HttpCredentialsAdapter;
-import com.pluxurydolo.youtube.dto.Tokens;
-import com.pluxurydolo.youtube.token.YouTubeTokenRefresher;
+import com.pluxurydolo.youtube.dto.YouTubeTokens;
 import com.pluxurydolo.youtube.token.AbstractTokenRetriever;
+import com.pluxurydolo.youtube.token.YouTubeTokenRefresher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -50,7 +50,7 @@ class YouTubeInstanceBuilderTests {
     @Test
     void testBuild() {
         when(abstractTokenRetriever.retrieve())
-            .thenReturn(Mono.just(new Tokens("accessToken", "refreshToken")));
+            .thenReturn(Mono.just(youTubeTokens()));
         when(youTubeTokenRefresher.refresh(anyString()))
             .thenReturn(Mono.just(httpCredentialsAdapter));
 
@@ -65,6 +65,10 @@ class YouTubeInstanceBuilderTests {
                 return true;
             })
             .verifyComplete();
+    }
+
+    private static YouTubeTokens youTubeTokens() {
+        return new YouTubeTokens("accessToken", "refreshToken");
     }
 
     private YouTube youTube() {
