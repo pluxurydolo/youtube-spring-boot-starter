@@ -4,7 +4,6 @@ import com.pluxurydolo.youtube.TestApplication;
 import com.pluxurydolo.youtube.configuration.SchedulerTestConfiguration;
 import com.pluxurydolo.youtube.configuration.SecretTestConfiguration;
 import com.pluxurydolo.youtube.configuration.TokensTestConfiguration;
-import com.pluxurydolo.youtube.configuration.ValidatorTestConfiguration;
 import com.pluxurydolo.youtube.configuration.YouTubeTestConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -15,7 +14,6 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFOR
     TestApplication.class,
     SecretTestConfiguration.class,
     TokensTestConfiguration.class,
-    ValidatorTestConfiguration.class,
     SchedulerTestConfiguration.class,
     YouTubeTestConfiguration.class
 })

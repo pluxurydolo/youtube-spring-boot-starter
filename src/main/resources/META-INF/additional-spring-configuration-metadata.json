@@ -16,19 +16,19 @@
       "name": "youtube.endpoint.login",
       "type": "java.lang.String",
       "description": "Эндпоинт логина.",
-      "sourceType": "com.pluxurydolo.youtube.properties.YouTubeEndpointProperties"
+      "sourceType": "com.pluxurydolo.youtube.controller.YouTubeOAuthController"
     },
     {
       "name": "youtube.endpoint.redirect",
       "type": "java.lang.String",
       "description": "Эндпоинт редиректа после логина.",
-      "sourceType": "com.pluxurydolo.youtube.properties.YouTubeEndpointProperties"
+      "sourceType": "com.pluxurydolo.youtube.controller.YouTubeOAuthController"
     },
     {
       "name": "youtube.endpoint.refresh-token",
       "type": "java.lang.String",
       "description": "Эндпоинт для обновления токена.",
-      "sourceType": "com.pluxurydolo.youtube.properties.YouTubeEndpointProperties"
+      "sourceType": "com.pluxurydolo.youtube.controller.YouTubeOAuthController"
     },
     {
       "name": "youtube.scheduler.refresh-token.cron",
