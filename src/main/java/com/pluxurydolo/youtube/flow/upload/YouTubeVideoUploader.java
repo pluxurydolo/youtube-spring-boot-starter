@@ -1,4 +1,4 @@
-package com.pluxurydolo.youtube.step;
+package com.pluxurydolo.youtube.flow.upload;
 
 import com.google.api.client.googleapis.media.MediaHttpUploaderProgressListener;
 import com.google.api.client.http.InputStreamContent;

@@ -4,7 +4,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.pluxurydolo.youtube.client.YouTubeVideoClient;
 import com.pluxurydolo.youtube.properties.YouTubeAuthProperties;
-import com.pluxurydolo.youtube.step.YouTubeVideoUploader;
+import com.pluxurydolo.youtube.flow.upload.YouTubeVideoUploader;
 import com.pluxurydolo.youtube.token.AbstractTokenRetriever;
 import com.pluxurydolo.youtube.token.YouTubeTokenRefresher;
 import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;

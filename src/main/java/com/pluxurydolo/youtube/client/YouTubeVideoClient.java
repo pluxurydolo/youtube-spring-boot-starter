@@ -2,7 +2,7 @@ package com.pluxurydolo.youtube.client;
 
 import com.pluxurydolo.youtube.dto.request.UploadVideoRequest;
 import com.pluxurydolo.youtube.exception.YouTubeUploadException;
-import com.pluxurydolo.youtube.step.YouTubeVideoUploader;
+import com.pluxurydolo.youtube.flow.upload.YouTubeVideoUploader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;

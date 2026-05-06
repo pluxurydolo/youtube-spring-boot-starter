@@ -4,7 +4,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
-import com.pluxurydolo.youtube.flow.YouTubeRefreshTokenFlow;
+import com.pluxurydolo.youtube.flow.oauth.YouTubeRefreshTokenFlow;
 import com.pluxurydolo.youtube.properties.YouTubeAuthProperties;
 import com.pluxurydolo.youtube.token.AbstractTokenSaver;
 import org.junit.jupiter.api.Test;

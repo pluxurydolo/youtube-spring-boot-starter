@@ -4,7 +4,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
-import com.pluxurydolo.youtube.flow.YouTubeRefreshTokenFlow;
+import com.pluxurydolo.youtube.flow.oauth.YouTubeRefreshTokenFlow;
 import com.pluxurydolo.youtube.secret.ClientSecretProvider;
 import com.pluxurydolo.youtube.token.AbstractTokenRetriever;
 import com.pluxurydolo.youtube.token.AbstractTokenSaver;
