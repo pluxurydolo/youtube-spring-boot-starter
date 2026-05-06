@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Import;
     YouTubeOAuthConfiguration.class,
     YouTubeWebConfiguration.class,
     YouTubeClientConfiguration.class,
-    YouTubeUploadStepConfiguration.class,
+    YouTubeUploadConfiguration.class,
     YouTubeSchedulingConfiguration.class
 })
 public class YouTubeAutoConfiguration {

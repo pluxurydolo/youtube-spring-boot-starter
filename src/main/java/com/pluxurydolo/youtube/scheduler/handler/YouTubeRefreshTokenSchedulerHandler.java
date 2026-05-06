@@ -1,6 +1,6 @@
 package com.pluxurydolo.youtube.scheduler.handler;
 
-import com.pluxurydolo.youtube.flow.YouTubeRefreshTokenFlow;
+import com.pluxurydolo.youtube.flow.oauth.YouTubeRefreshTokenFlow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
