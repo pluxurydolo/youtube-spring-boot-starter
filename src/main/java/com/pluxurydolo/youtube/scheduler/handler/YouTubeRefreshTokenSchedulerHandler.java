@@ -15,7 +15,7 @@ public class YouTubeRefreshTokenSchedulerHandler {
     }
 
     public Mono<String> handle(String jobName) {
-        LOGGER.info("xqgm Стартовала джоба {}", jobName);
+        LOGGER.info("xqgm [youtube-starter] Стартовала джоба {}", jobName);
 
         return youTubeRefreshTokenFlow.refreshToken();
     }
