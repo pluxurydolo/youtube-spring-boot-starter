@@ -13,7 +13,8 @@ import org.springframework.context.annotation.Import;
     YouTubeWebConfiguration.class,
     YouTubeClientConfiguration.class,
     YouTubeUploadConfiguration.class,
-    YouTubeSchedulingConfiguration.class
+    YouTubeSchedulingConfiguration.class,
+    YouTubeResilienceConfiguration.class
 })
 public class YouTubeAutoConfiguration {
 }
