@@ -3,8 +3,8 @@ package com.pluxurydolo.youtube.configuration;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.pluxurydolo.youtube.client.YouTubeVideoClient;
-import com.pluxurydolo.youtube.properties.YouTubeAuthProperties;
 import com.pluxurydolo.youtube.flow.upload.YouTubeVideoPublisher;
+import com.pluxurydolo.youtube.properties.YouTubeAuthProperties;
 import com.pluxurydolo.youtube.token.AbstractTokenRetriever;
 import com.pluxurydolo.youtube.token.YouTubeTokenRefresher;
 import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
@@ -24,11 +24,11 @@ public class YouTubeClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public YouTubeInstanceBuilder youTubeInstanceBuilder(
+        YouTubeAuthProperties youTubeAuthProperties,
         AbstractTokenRetriever abstractTokenRetriever,
         YouTubeTokenRefresher youTubeTokenRefresher,
         NetHttpTransport netHttpTransport,
-        GsonFactory gsonFactory,
-        YouTubeAuthProperties youTubeAuthProperties
+        GsonFactory gsonFactory
     ) {
         String applicationName = youTubeAuthProperties.applicationName();
 

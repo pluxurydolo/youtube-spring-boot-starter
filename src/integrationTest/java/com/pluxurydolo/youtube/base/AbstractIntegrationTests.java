@@ -1,7 +1,7 @@
 package com.pluxurydolo.youtube.base;
 
 import com.pluxurydolo.youtube.TestApplication;
-import com.pluxurydolo.youtube.configuration.SchedulerTestConfiguration;
+import com.pluxurydolo.youtube.configuration.HookTestConfiguration;
 import com.pluxurydolo.youtube.configuration.SecretTestConfiguration;
 import com.pluxurydolo.youtube.configuration.TokensTestConfiguration;
 import com.pluxurydolo.youtube.configuration.YouTubeTestConfiguration;
@@ -14,7 +14,7 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFOR
     TestApplication.class,
     SecretTestConfiguration.class,
     TokensTestConfiguration.class,
-    SchedulerTestConfiguration.class,
+    HookTestConfiguration.class,
     YouTubeTestConfiguration.class
 })
 @DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)

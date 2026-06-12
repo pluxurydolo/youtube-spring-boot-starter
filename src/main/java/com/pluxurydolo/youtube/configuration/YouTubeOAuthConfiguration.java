@@ -4,7 +4,12 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
+import com.pluxurydolo.youtube.flow.oauth.YouTubeAccessTokenFlow;
+import com.pluxurydolo.youtube.flow.oauth.YouTubeAuthorizationCodeFlow;
 import com.pluxurydolo.youtube.flow.oauth.YouTubeRefreshTokenFlow;
+import com.pluxurydolo.youtube.flow.oauth.hook.AccessTokenFlowHook;
+import com.pluxurydolo.youtube.flow.oauth.hook.RefreshTokenFlowHook;
+import com.pluxurydolo.youtube.properties.YouTubeAuthProperties;
 import com.pluxurydolo.youtube.secret.ClientSecretProvider;
 import com.pluxurydolo.youtube.token.AbstractTokenRetriever;
 import com.pluxurydolo.youtube.token.AbstractTokenSaver;
@@ -26,6 +31,41 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @Configuration
 public class YouTubeOAuthConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(YouTubeOAuthConfiguration.class);
+
+    @Bean
+    @ConditionalOnMissingBean
+    public YouTubeAuthorizationCodeFlow youTubeAuthorizationCodeFlow(
+        YouTubeAuthProperties youTubeAuthProperties,
+        GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow
+    ) {
+        return new YouTubeAuthorizationCodeFlow(youTubeAuthProperties, googleAuthorizationCodeFlow);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public YouTubeAccessTokenFlow youTubeAccessTokenFlow(
+        YouTubeAuthProperties youTubeAuthProperties,
+        GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow,
+        AbstractTokenSaver abstractTokenSaver,
+        AccessTokenFlowHook accessTokenFlowHook
+    ) {
+        return new YouTubeAccessTokenFlow(
+            youTubeAuthProperties,
+            googleAuthorizationCodeFlow,
+            abstractTokenSaver,
+            accessTokenFlowHook
+        );
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public YouTubeRefreshTokenFlow youTubeRefreshTokenFlow(
+        AbstractTokenRetriever abstractTokenRetriever,
+        YouTubeTokenRefresher youTubeTokenRefresher,
+        RefreshTokenFlowHook refreshTokenFlowHook
+    ) {
+        return new YouTubeRefreshTokenFlow(abstractTokenRetriever, youTubeTokenRefresher, refreshTokenFlowHook);
+    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -63,14 +103,5 @@ public class YouTubeOAuthConfiguration {
         AbstractTokenSaver abstractTokenSaver
     ) {
         return new YouTubeTokenRefresher(googleClientSecrets, abstractTokenSaver);
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public YouTubeRefreshTokenFlow youTubeRefreshTokenFlow(
-        AbstractTokenRetriever abstractTokenRetriever,
-        YouTubeTokenRefresher youTubeTokenRefresher
-    ) {
-        return new YouTubeRefreshTokenFlow(abstractTokenRetriever, youTubeTokenRefresher);
     }
 }

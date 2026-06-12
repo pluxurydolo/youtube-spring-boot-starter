@@ -26,7 +26,7 @@ class YouTubeOAuthControllerIntegrationTests extends AbstractControllerIntegrati
             .exchange()
             .expectStatus().isOk()
             .expectBody(String.class)
-            .value(response -> assertThat(response).isEqualTo("saveTokens"));
+            .value(response -> assertThat(response).isEqualTo("SUCCESS"));
     }
 
     @Test
@@ -36,6 +36,6 @@ class YouTubeOAuthControllerIntegrationTests extends AbstractControllerIntegrati
             .exchange()
             .expectStatus().isOk()
             .expectBody(String.class)
-            .value(response -> assertThat(response).isEqualTo("authenticationType"));
+            .value(response -> assertThat(response).isEqualTo("SUCCESS"));
     }
 }

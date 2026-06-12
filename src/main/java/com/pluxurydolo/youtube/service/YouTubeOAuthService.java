@@ -1,63 +1,34 @@
 package com.pluxurydolo.youtube.service;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
+import com.pluxurydolo.youtube.flow.oauth.YouTubeAccessTokenFlow;
+import com.pluxurydolo.youtube.flow.oauth.YouTubeAuthorizationCodeFlow;
 import com.pluxurydolo.youtube.flow.oauth.YouTubeRefreshTokenFlow;
-import com.pluxurydolo.youtube.properties.YouTubeAuthProperties;
-import com.pluxurydolo.youtube.token.AbstractTokenSaver;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
-
-import java.net.URI;
-
-import static java.net.URI.create;
-import static org.springframework.http.HttpStatus.FOUND;
 
 public class YouTubeOAuthService {
-    private final GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow;
-    private final AbstractTokenSaver abstractTokenSaver;
+    private final YouTubeAuthorizationCodeFlow youTubeAuthorizationCodeFlow;
+    private final YouTubeAccessTokenFlow youTubeAccessTokenFlow;
     private final YouTubeRefreshTokenFlow youTubeRefreshTokenFlow;
-    private final YouTubeAuthProperties youTubeAuthProperties;
 
     public YouTubeOAuthService(
-        GoogleAuthorizationCodeFlow googleAuthorizationCodeFlow,
-        AbstractTokenSaver abstractTokenSaver,
-        YouTubeRefreshTokenFlow youTubeRefreshTokenFlow,
-        YouTubeAuthProperties youTubeAuthProperties
+        YouTubeAuthorizationCodeFlow youTubeAuthorizationCodeFlow,
+        YouTubeAccessTokenFlow youTubeAccessTokenFlow,
+        YouTubeRefreshTokenFlow youTubeRefreshTokenFlow
     ) {
-        this.googleAuthorizationCodeFlow = googleAuthorizationCodeFlow;
-        this.abstractTokenSaver = abstractTokenSaver;
+        this.youTubeAuthorizationCodeFlow = youTubeAuthorizationCodeFlow;
+        this.youTubeAccessTokenFlow = youTubeAccessTokenFlow;
         this.youTubeRefreshTokenFlow = youTubeRefreshTokenFlow;
-        this.youTubeAuthProperties = youTubeAuthProperties;
     }
 
     public Mono<Void> login(ServerWebExchange serverWebExchange) {
-        String redirectUri = youTubeAuthProperties.redirectUri();
-
-        String authorizationUrl = googleAuthorizationCodeFlow.newAuthorizationUrl()
-            .setRedirectUri(redirectUri)
-            .build();
-
-        URI uri = create(authorizationUrl);
-
-        ServerHttpResponse response = serverWebExchange.getResponse();
-        response.setStatusCode(FOUND);
-        response.getHeaders().setLocation(uri);
-
+        ServerHttpResponse response = youTubeAuthorizationCodeFlow.getResponse(serverWebExchange);
         return response.setComplete();
     }
 
     public Mono<String> redirect(String code) {
-        String redirectUri = youTubeAuthProperties.redirectUri();
-
-        GoogleAuthorizationCodeTokenRequest tokenRequest = googleAuthorizationCodeFlow.newTokenRequest(code)
-            .setRedirectUri(redirectUri);
-
-        return Mono.fromCallable(tokenRequest::execute)
-            .flatMap(abstractTokenSaver::save)
-            .subscribeOn(Schedulers.boundedElastic());
+        return youTubeAccessTokenFlow.getAccessToken(code);
     }
 
     public Mono<String> refreshToken() {
