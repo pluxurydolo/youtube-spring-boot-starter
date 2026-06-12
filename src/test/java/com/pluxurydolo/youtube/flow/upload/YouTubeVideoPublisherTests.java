@@ -6,7 +6,7 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
-import com.pluxurydolo.youtube.dto.request.UploadVideoRequest;
+import com.pluxurydolo.youtube.dto.request.PublishVideoRequest;
 import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 import static reactor.test.StepVerifier.create;
 
 @ExtendWith(MockitoExtension.class)
-class YouTubeVideoUploaderTests {
+class YouTubeVideoPublisherTests {
 
     @Mock
     private YouTubeInstanceBuilder youTubeInstanceBuilder;
@@ -65,10 +65,10 @@ class YouTubeVideoUploaderTests {
     private MediaHttpUploader mediaHttpUploader;
 
     @InjectMocks
-    private YouTubeVideoUploader youTubeVideoUploader;
+    private YouTubeVideoPublisher youTubeVideoPublisher;
 
     @Test
-    void testUpload() throws IOException {
+    void testPublish() throws IOException {
         when(youTubeInstanceBuilder.build())
             .thenReturn(Mono.just(youTube));
         when(youTubeVideoSnippetBuilder.build(anyString(), anyString(), any()))
@@ -90,7 +90,7 @@ class YouTubeVideoUploaderTests {
         when(insert.execute())
             .thenReturn(video);
 
-        Mono<String> result = youTubeVideoUploader.upload(uploadVideoRequest());
+        Mono<String> result = youTubeVideoPublisher.publish(publishVideoRequest());
 
         create(result)
             .expectNext("title")
@@ -98,19 +98,19 @@ class YouTubeVideoUploaderTests {
     }
 
     @Test
-    void testUploadWhenExceptionOccurred() {
+    void testPublishWhenExceptionOccurred() {
         when(youTubeInstanceBuilder.build())
             .thenReturn(Mono.error(new RuntimeException()));
 
-        Mono<String> result = youTubeVideoUploader.upload(uploadVideoRequest());
+        Mono<String> result = youTubeVideoPublisher.publish(publishVideoRequest());
 
         create(result)
             .verifyErrorMatches(throwable -> throwable.getClass().equals(RuntimeException.class));
     }
 
-    private static UploadVideoRequest uploadVideoRequest() {
+    private static PublishVideoRequest publishVideoRequest() {
         byte[] bytes = {};
         List<String> tags = List.of("tag1", "tag2");
-        return new UploadVideoRequest(bytes, "title", "description", tags);
+        return new PublishVideoRequest(bytes, "title", "description", tags);
     }
 }

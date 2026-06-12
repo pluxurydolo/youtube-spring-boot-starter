@@ -5,7 +5,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.read.ListAppender;
 import ch.qos.logback.core.spi.AppenderAttachable;
 import com.pluxurydolo.youtube.base.AbstractIntegrationTests;
-import com.pluxurydolo.youtube.dto.request.UploadVideoRequest;
+import com.pluxurydolo.youtube.dto.request.PublishVideoRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,11 +24,10 @@ class YouTubeVideoClientIntegrationTests extends AbstractIntegrationTests {
     private YouTubeVideoClient youTubeVideoClient;
 
     @Test
-    void testUploadVideo() {
+    void testPublishVideo() {
         List<ILoggingEvent> logs = listAppender().list;
 
-        UploadVideoRequest request = new UploadVideoRequest(bytes(), "title", "description", tags());
-        youTubeVideoClient.uploadVideo(request)
+        youTubeVideoClient.publishVideo(publishVideoRequest())
             .subscribe();
 
         await().atMost(Duration.ofSeconds(5))
@@ -46,6 +45,10 @@ class YouTubeVideoClientIntegrationTests extends AbstractIntegrationTests {
         listAppender.start();
         LOGGER.addAppender(listAppender);
         return listAppender;
+    }
+
+    private static PublishVideoRequest publishVideoRequest() {
+        return new PublishVideoRequest(bytes(), "title", "description", tags());
     }
 
     private static byte[] bytes() {

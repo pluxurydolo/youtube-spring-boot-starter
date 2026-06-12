@@ -6,8 +6,8 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.Video;
 import com.google.api.services.youtube.model.VideoSnippet;
 import com.google.api.services.youtube.model.VideoStatus;
-import com.pluxurydolo.youtube.dto.request.UploadVideoRequest;
-import com.pluxurydolo.youtube.exception.YouTubeUploadException;
+import com.pluxurydolo.youtube.dto.request.PublishVideoRequest;
+import com.pluxurydolo.youtube.exception.YouTubePublishVideoException;
 import com.pluxurydolo.youtube.util.YouTubeInstanceBuilder;
 import reactor.core.publisher.Mono;
 
@@ -16,14 +16,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-public class YouTubeVideoUploader {
+public class YouTubeVideoPublisher {
     private final YouTubeInstanceBuilder youTubeInstanceBuilder;
     private final YouTubeVideoSnippetBuilder youTubeVideoSnippetBuilder;
     private final YouTubeVideoStatusBuilder youTubeVideoStatusBuilder;
     private final YouTubeVideoBuilder youTubeVideoBuilder;
     private final MediaHttpUploaderProgressListener progressListener;
 
-    public YouTubeVideoUploader(
+    public YouTubeVideoPublisher(
         YouTubeInstanceBuilder youTubeInstanceBuilder,
         YouTubeVideoSnippetBuilder youTubeVideoSnippetBuilder,
         YouTubeVideoStatusBuilder youTubeVideoStatusBuilder,
@@ -37,7 +37,7 @@ public class YouTubeVideoUploader {
         this.progressListener = progressListener;
     }
 
-    public Mono<String> upload(UploadVideoRequest request) {
+    public Mono<String> publish(PublishVideoRequest request) {
         String title = request.title();
         byte[] bytes = request.bytes();
 
@@ -45,11 +45,11 @@ public class YouTubeVideoUploader {
         Video video = buildVideo(request);
 
         return youTubeInstanceBuilder.build()
-            .flatMap(youTube -> uploadVideo(bytes, youTube, parts, video))
+            .flatMap(youTube -> publishVideo(bytes, youTube, parts, video))
             .thenReturn(title);
     }
 
-    private Video buildVideo(UploadVideoRequest request) {
+    private Video buildVideo(PublishVideoRequest request) {
         String title = request.title();
         String description = request.description();
 
@@ -61,7 +61,7 @@ public class YouTubeVideoUploader {
         return youTubeVideoBuilder.build(videoSnippet, videoStatus);
     }
 
-    private Mono<Video> uploadVideo(byte[] bytes, YouTube youTube, List<String> parts, Video video) {
+    private Mono<Video> publishVideo(byte[] bytes, YouTube youTube, List<String> parts, Video video) {
         try {
             InputStream inputStream = new ByteArrayInputStream(bytes);
             InputStreamContent inputStreamContent = new InputStreamContent("video/mp4", inputStream);
@@ -75,7 +75,7 @@ public class YouTubeVideoUploader {
 
             return Mono.fromCallable(request::execute);
         } catch (IOException exception) {
-            return Mono.error(new YouTubeUploadException(exception));
+            return Mono.error(new YouTubePublishVideoException(exception));
         }
     }
 }

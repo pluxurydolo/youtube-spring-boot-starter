@@ -2,7 +2,7 @@ package com.pluxurydolo.youtube.util;
 
 import com.google.api.client.googleapis.media.MediaHttpUploader;
 import com.google.api.client.googleapis.media.MediaHttpUploaderProgressListener;
-import com.pluxurydolo.youtube.exception.YouTubeUploadException;
+import com.pluxurydolo.youtube.exception.YouTubeUploadProgressException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -48,7 +48,7 @@ public class YouTubeUploadProgressListener implements MediaHttpUploaderProgressL
             return String.format(US, "%.1f", progress);
         } catch (IOException exception) {
             LOGGER.error("gvjg [youtube-starter] Произошла ошибка при получении прогресса загрузки");
-            throw new YouTubeUploadException(exception);
+            throw new YouTubeUploadProgressException(exception);
         }
     }
 }

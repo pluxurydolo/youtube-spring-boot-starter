@@ -2,7 +2,7 @@ package com.pluxurydolo.youtube.dto.request;
 
 import java.util.List;
 
-public record UploadVideoRequest(
+public record PublishVideoRequest(
     byte[] bytes,
     String title,
     String description,

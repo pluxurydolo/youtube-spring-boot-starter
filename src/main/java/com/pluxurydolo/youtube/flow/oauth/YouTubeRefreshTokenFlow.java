@@ -29,7 +29,7 @@ public class YouTubeRefreshTokenFlow {
             .map(credentials -> credentials.getCredentials().getAuthenticationType())
             .doOnSuccess(_ -> LOGGER.info("bqkn [youtube-starter] Access token успешно обновлен"))
             .onErrorResume(throwable -> {
-                LOGGER.error("dkhb [youtube-starter] Произошла ошибка при обновлении access token]");
+                LOGGER.error("dkhb [youtube-starter] Произошла ошибка при обновлении access token");
                 return Mono.error(new YouTubeRefreshTokenException(throwable));
             });
     }

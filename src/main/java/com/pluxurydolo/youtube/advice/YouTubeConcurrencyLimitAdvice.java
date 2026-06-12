@@ -15,12 +15,12 @@ import static org.springframework.http.HttpStatus.TOO_MANY_REQUESTS;
 import static org.springframework.http.ProblemDetail.forStatusAndDetail;
 
 @RestControllerAdvice
-public class ConcurrencyLimitAdvice {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConcurrencyLimitAdvice.class);
+public class YouTubeConcurrencyLimitAdvice {
+    private static final Logger LOGGER = LoggerFactory.getLogger(YouTubeConcurrencyLimitAdvice.class);
 
     private final Clock clock;
 
-    public ConcurrencyLimitAdvice(Clock clock) {
+    public YouTubeConcurrencyLimitAdvice(Clock clock) {
         this.clock = clock;
     }
 
@@ -36,6 +36,7 @@ public class ConcurrencyLimitAdvice {
         ProblemDetail problemDetail = forStatusAndDetail(TOO_MANY_REQUESTS, "Лимит запросов исчерпан");
         problemDetail.setTitle("Too Many Requests");
         problemDetail.setProperty("timestamp", timestamp);
+
         return problemDetail;
     }
 }
